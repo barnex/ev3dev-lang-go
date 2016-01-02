@@ -92,5 +92,8 @@ func toGoDoc(x string) string {
 	if strings.HasPrefix(x, "-") {
 		return " " + x
 	}
+	if strings.HasPrefix(x, " ") {
+		return "  " + x
+	}
 	return x
 }
