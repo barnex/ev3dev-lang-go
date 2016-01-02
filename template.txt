@@ -2,19 +2,24 @@ package ev3
 
 {{range $t,$v := .classes}} 
 
+
 {{range .description}}
 // {{.}}{{end}}{{with .docsLink}}
 // {{.}}{{end}}
 type {{$t|camel}} struct{
-
+	{{with $v.inheritance}}{{.|camel}}{{else}}ioDevice
+	{{end}}
 }
 
 {{range .systemProperties}}
+
 {{range .description}}
 // {{.}}{{end}}
 func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} ({{if .writeAccess}}x {{.type|type}}{{end}}) {{if .readAccess}}{{.type|type}}{{end}}{
 
 }
+
 {{end}}
+
 
 {{end}}

@@ -5,6 +5,7 @@ package ev3
 // button capabilites are enumerated in the 'platforms' section
 // of this specification
 type Button struct {
+	ioDevice
 }
 
 // The DC motor class provides a uniform interface for using regular DC motors
@@ -12,6 +13,7 @@ type Button struct {
 // and LEGO Power Functions motors.
 // http://www.ev3dev.org/docs/drivers/dc-motor-class/
 type DcMotor struct {
+	ioDevice
 }
 
 // Sets the command for the motor. Possible values are `run-forever`, `run-timed` and
@@ -97,6 +99,7 @@ func (d *DcMotor) TimeSp(x int) int {
 
 // A generic interface to control I2C-type EV3 sensors.
 type I2cSensor struct {
+	Sensor
 }
 
 // Returns the firmware version of the sensor if available. Currently only
@@ -115,12 +118,14 @@ func (i *I2cSensor) PollMs(x int) int {
 
 // EV3 large servo motor
 type LargeMotor struct {
+	Motor
 }
 
 // Any device controlled by the generic LED driver.
 // See https://www.kernel.org/doc/Documentation/leds/leds-class.txt
 // for more details.
 type Led struct {
+	ioDevice
 }
 
 // Returns the maximum allowable brightness value.
@@ -196,6 +201,7 @@ func (l *Led) DelayOff(x int) int {
 // related to the actual port at all - use the `address` attribute to find
 // a specific port.
 type LegoPort struct {
+	ioDevice
 }
 
 // Returns the name of the driver that loaded this device. You can find the
@@ -242,6 +248,7 @@ func (l *LegoPort) Status() string {
 
 // EV3 medium servo motor
 type MediumMotor struct {
+	Motor
 }
 
 // The motor class provides a uniform interface for using motors with
@@ -250,6 +257,7 @@ type MediumMotor struct {
 // most common type of motor, so we just call it `motor`.
 // http://www.ev3dev.org/docs/drivers/tacho-motor-class/
 type Motor struct {
+	ioDevice
 }
 
 // Sends a command to the motor controller. See `commands` for a list of
@@ -455,6 +463,7 @@ func (m *Motor) TimeSp(x int) int {
 // A generic interface to read data from the system's power_supply class.
 // Uses the built-in legoev3-battery if none is specified.
 type PowerSupply struct {
+	ioDevice
 }
 
 // The measured current that the battery is supplying (in microamps)
@@ -499,6 +508,7 @@ func (p *PowerSupply) Type() string {
 // program will still work.
 // http://www.ev3dev.org/docs/drivers/lego-sensor-class/
 type Sensor struct {
+	ioDevice
 }
 
 // Sends a command to the sensor.
@@ -557,6 +567,7 @@ func (s *Sensor) Units() string {
 // servo motors.
 // http://www.ev3dev.org/docs/drivers/servo-motor-class/
 type ServoMotor struct {
+	ioDevice
 }
 
 // Sets the command for the servo. Valid values are `run` and `float`. Setting
