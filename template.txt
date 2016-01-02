@@ -1,3 +1,4 @@
+package ev3
 
 {{range $t,$v := .classes}} 
 
@@ -9,7 +10,11 @@ type {{$t|camel}} struct{
 }
 
 {{range .systemProperties}}
-func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}}{}
+{{range .description}}
+// {{.}}{{end}}
+func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} ({{if .writeAccess}}x {{.type|type}}{{end}}) {{if .readAccess}}{{.type|type}}{{end}}{
+
+}
 {{end}}
 
 {{end}}

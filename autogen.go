@@ -15,7 +15,8 @@ func main() {
 	t := template.New(templFile)
 	t.Funcs(map[string]interface{}{
 		"camel": camelCase,
-		"recv": firstLetter,
+		"recv":  firstLetter,
+		"type":  toType,
 	})
 	t, err := t.ParseFiles(templFile)
 	if err != nil {
@@ -44,6 +45,7 @@ func camelCase(x string) string {
 	cc := ""
 	needUp := true
 	for _, c := range x {
+		if c == '/'{continue}
 		if c != '_' {
 			if needUp {
 				cc += string(unicode.ToUpper(c))
@@ -60,4 +62,14 @@ func camelCase(x string) string {
 
 func firstLetter(x string) string {
 	return string(x[:1])
+}
+
+var typeMap = map[string]string{
+	"string array": "[]string",
+	"string":       "string",
+	"int":          "int",
+}
+
+func toType(x string) string {
+	return typeMap[x]
 }
