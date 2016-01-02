@@ -66,10 +66,12 @@ func firstLetter(x string) string {
 
 var typeMap = map[string]string{
 	"string array": "[]string",
-	"string":       "string",
-	"int":          "int",
+	"string selector": "Selector",
 }
 
 func toType(x string) string {
-	return typeMap[x]
+	if t, ok := typeMap[x]; ok{
+		return t
+	}
+	return x
 }

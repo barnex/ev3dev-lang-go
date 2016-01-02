@@ -1,6 +1,6 @@
-// Package ev3 provides a Go interface for LEGO Mindstorms EV3,
-// as defined by github.com/ev3dev/ev3dev-lang.
-// This file is auto-generated for ev3dev-lang version {{.meta.version}}, revision {{.meta.specRevision}}.
+// Package ev3 provides a Go interface for LEGO Mindstorms EV3 running ev3dev
+// (http://www.ev3dev.org).
+// This file is auto-generated for the spec defined at http://github.com/ev3dev/ev3dev-lang, version {{.meta.version}}, revision {{.meta.specRevision}}.
 // Supported kernel: {{.meta.supportedKernel}}
 package ev3
 
@@ -11,8 +11,12 @@ package ev3
 // {{.}}{{end}}{{with .docsLink}}
 // {{.}}{{end}}
 type {{$t|camel}} struct{
-	{{with $v.inheritance}}{{.|camel}}{{else}}ioDevice
+	{{with $v.inheritance}}{{.|camel}}{{else}}IODevice
 	{{end}}
+}
+
+func Open{{$t|camel}}(port string)*{{$t|camel}}{
+	return nil
 }
 
 {{range .systemProperties}}
@@ -20,7 +24,7 @@ type {{$t|camel}} struct{
 {{range .description}}
 // {{.}}{{end}}
 func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} ({{if .writeAccess}}x {{.type|type}}{{end}}) {{if .readAccess}}{{.type|type}}{{end}}{
-
+	panic("not implemented")
 }
 
 {{end}}
