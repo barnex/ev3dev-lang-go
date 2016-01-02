@@ -37,7 +37,7 @@ func Open{{$t|camel}}(port string) (*{{$t|camel}}, error) {
 {{range .description}}
 // {{.}}{{end}}
 func ({{$t|recv}} *{{$t|camel}}) Set{{.systemName|camel}} (x {{.type|type}}) {
-	panic("not implemented")
+	{{$t|recv}}.write{{.type|suffix}}("{{.systemName}}", x)
 }
 {{end}}
 
@@ -45,7 +45,7 @@ func ({{$t|recv}} *{{$t|camel}}) Set{{.systemName|camel}} (x {{.type|type}}) {
 {{range .description}}
 // {{.}}{{end}}
 func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} () {{.type|type}}{
-	panic("not implemented")
+	return {{$t|recv}}.read{{.type|suffix}}("{{.systemName}}")
 }
 {{end}}
 
