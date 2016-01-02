@@ -10,7 +10,7 @@ package ev3
 
 
 {{range .description}}
-// {{.}}{{end}}{{with .docsLink}}
+// {{.|doc}}{{end}}{{with .docsLink}}
 // {{.}}{{end}}
 type {{$t|camel}} struct{
 	{{with $v.inheritance}}{{.|camel}}{{else}}IODevice
@@ -35,7 +35,7 @@ func Open{{$t|camel}}(port string) (*{{$t|camel}}, error) {
 
 {{if .writeAccess}}
 {{range .description}}
-// {{.}}{{end}}
+// {{.|doc}}{{end}}
 func ({{$t|recv}} *{{$t|camel}}) Set{{.systemName|camel}} (x {{.type|type}}) {
 	{{$t|recv}}.write{{.type|suffix}}("{{.systemName}}", x)
 }
@@ -43,7 +43,7 @@ func ({{$t|recv}} *{{$t|camel}}) Set{{.systemName|camel}} (x {{.type|type}}) {
 
 {{if .readAccess}}
 {{range .description}}
-// {{.}}{{end}}
+// {{.|doc}}{{end}}
 func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} () {{.type|type}}{
 	return {{$t|recv}}.read{{.type|suffix}}("{{.systemName}}")
 }

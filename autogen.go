@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"text/template"
+	"strings"
 	"unicode"
 )
 
@@ -18,6 +19,7 @@ func main() {
 		"recv":   firstLetter,
 		"type":   toType,
 		"suffix": toTypeSuffix,
+		"doc":    toGoDoc,
 	})
 	t, err := t.ParseFiles(templFile)
 	if err != nil {
@@ -82,6 +84,13 @@ var typeMap = map[string]string{
 func toType(x string) string {
 	if t, ok := typeMap[x]; ok {
 		return t
+	}
+	return x
+}
+
+func toGoDoc(x string) string {
+	if strings.HasPrefix(x, "-") {
+		return " " + x
 	}
 	return x
 }
