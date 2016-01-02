@@ -1,15 +1,15 @@
 
-{{range $k,$v := .classes}} 
+{{range $t,$v := .classes}} 
 
 {{range .description}}
 // {{.}}{{end}}{{with .docsLink}}
 // {{.}}{{end}}
-type {{$k}} struct{
+type {{$t|camel}} struct{
 
 }
 
 {{range .systemProperties}}
-func (d *{{$k}}) {{.systemName}}{}
+func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}}{}
 {{end}}
 
 {{end}}
