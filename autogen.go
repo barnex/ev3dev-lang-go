@@ -51,6 +51,7 @@ func camelCase(x string) string {
 func toTypeSuffix(x string) string {
 	return camelCaseImpl(x, ' ')
 }
+
 func camelCaseImpl(x string, sep rune) string {
 	cc := ""
 	needUp := true
