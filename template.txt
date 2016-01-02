@@ -1,0 +1,15 @@
+
+{{range $k,$v := .classes}} 
+
+{{range .description}}
+// {{.}}{{end}}{{with .docsLink}}
+// {{.}}{{end}}
+type {{$k}} struct{
+
+}
+
+{{range .systemProperties}}
+func (d *{{$k}}) {{.systemName}}{}
+{{end}}
+
+{{end}}
