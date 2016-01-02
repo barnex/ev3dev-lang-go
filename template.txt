@@ -1,3 +1,7 @@
+// Package ev3 provides a Go interface for LEGO Mindstorms EV3,
+// as defined by github.com/ev3dev/ev3dev-lang.
+// This file is auto-generated for ev3dev-lang version {{.meta.version}}, revision {{.meta.specRevision}}.
+// Supported kernel: {{.meta.supportedKernel}}
 package ev3
 
 {{range $t,$v := .classes}} 
