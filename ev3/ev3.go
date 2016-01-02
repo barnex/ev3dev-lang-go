@@ -1,3 +1,5 @@
+// UNDER CONSTRUCTION, NOTHING TO SEE HERE
+//
 // Package ev3 provides a Go interface for LEGO Mindstorms EV3 running ev3dev
 // (http://www.ev3dev.org).
 // This file is auto-generated for the spec defined at http://github.com/ev3dev/ev3dev-lang, version 0.9.3-pre, revision 2.
@@ -12,8 +14,14 @@ type Button struct {
 	IODevice
 }
 
-func OpenButton(port string) *Button {
-	return nil
+func OpenButton(port string) (*Button, error) {
+
+	io, err := OpenIODevice("<no value>", "<no value>", port)
+	if err != nil {
+		return nil, err
+	}
+	return &Button{IODevice: io}, nil
+
 }
 
 // The DC motor class provides a uniform interface for using regular DC motors
@@ -24,14 +32,20 @@ type DcMotor struct {
 	IODevice
 }
 
-func OpenDcMotor(port string) *DcMotor {
-	return nil
+func OpenDcMotor(port string) (*DcMotor, error) {
+
+	io, err := OpenIODevice("dc-motor", "motor{0}", port)
+	if err != nil {
+		return nil, err
+	}
+	return &DcMotor{IODevice: io}, nil
+
 }
 
 // Sets the command for the motor. Possible values are `run-forever`, `run-timed` and
 // `stop`. Not all commands may be supported, so be sure to check the contents
 // of the `commands` attribute.
-func (d *DcMotor) Command(x string) {
+func (d *DcMotor) SetCommand(x string) {
 	panic("not implemented")
 }
 
@@ -56,12 +70,24 @@ func (d *DcMotor) DutyCycle() int {
 // Writing sets the duty cycle setpoint of the PWM signal sent to the motor.
 // Valid values are -100 to 100 (-100% to 100%). Reading returns the current
 // setpoint.
-func (d *DcMotor) DutyCycleSp(x int) int {
+func (d *DcMotor) SetDutyCycleSp(x int) {
+	panic("not implemented")
+}
+
+// Writing sets the duty cycle setpoint of the PWM signal sent to the motor.
+// Valid values are -100 to 100 (-100% to 100%). Reading returns the current
+// setpoint.
+func (d *DcMotor) DutyCycleSp() int {
 	panic("not implemented")
 }
 
 // Sets the polarity of the motor. Valid values are `normal` and `inversed`.
-func (d *DcMotor) Polarity(x string) string {
+func (d *DcMotor) SetPolarity(x string) {
+	panic("not implemented")
+}
+
+// Sets the polarity of the motor. Valid values are `normal` and `inversed`.
+func (d *DcMotor) Polarity() string {
 	panic("not implemented")
 }
 
@@ -72,13 +98,25 @@ func (d *DcMotor) Address() string {
 
 // Sets the time in milliseconds that it take the motor to ramp down from 100%
 // to 0%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) RampDownSp(x int) int {
+func (d *DcMotor) SetRampDownSp(x int) {
+	panic("not implemented")
+}
+
+// Sets the time in milliseconds that it take the motor to ramp down from 100%
+// to 0%. Valid values are 0 to 10000 (10 seconds). Default is 0.
+func (d *DcMotor) RampDownSp() int {
 	panic("not implemented")
 }
 
 // Sets the time in milliseconds that it take the motor to up ramp from 0% to
 // 100%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) RampUpSp(x int) int {
+func (d *DcMotor) SetRampUpSp(x int) {
+	panic("not implemented")
+}
+
+// Sets the time in milliseconds that it take the motor to up ramp from 0% to
+// 100%. Valid values are 0 to 10000 (10 seconds). Default is 0.
+func (d *DcMotor) RampUpSp() int {
 	panic("not implemented")
 }
 
@@ -92,7 +130,7 @@ func (d *DcMotor) State() []string {
 
 // Sets the stop command that will be used when the motor stops. Read
 // `stop_commands` to get the list of valid values.
-func (d *DcMotor) StopCommand(x string) {
+func (d *DcMotor) SetStopCommand(x string) {
 	panic("not implemented")
 }
 
@@ -105,7 +143,14 @@ func (d *DcMotor) StopCommands() []string {
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (d *DcMotor) TimeSp(x int) int {
+func (d *DcMotor) SetTimeSp(x int) {
+	panic("not implemented")
+}
+
+// Writing specifies the amount of time the motor will run when using the
+// `run-timed` command. Reading returns the current value. Units are in
+// milliseconds.
+func (d *DcMotor) TimeSp() int {
 	panic("not implemented")
 }
 
@@ -114,8 +159,14 @@ type I2cSensor struct {
 	Sensor
 }
 
-func OpenI2cSensor(port string) *I2cSensor {
-	return nil
+func OpenI2cSensor(port string) (*I2cSensor, error) {
+
+	super, err := OpenSensor(port)
+	if err != nil {
+		return nil, err
+	}
+	return &I2cSensor{*super}, nil
+
 }
 
 // Returns the firmware version of the sensor if available. Currently only
@@ -128,7 +179,15 @@ func (i *I2cSensor) FwVersion() string {
 // polling period. Setting to 0 disables polling. Minimum value is hard
 // coded as 50 msec. Returns -EOPNOTSUPP if changing polling is not supported.
 // Currently only I2C/NXT sensors support changing the polling period.
-func (i *I2cSensor) PollMs(x int) int {
+func (i *I2cSensor) SetPollMs(x int) {
+	panic("not implemented")
+}
+
+// Returns the polling period of the sensor in milliseconds. Writing sets the
+// polling period. Setting to 0 disables polling. Minimum value is hard
+// coded as 50 msec. Returns -EOPNOTSUPP if changing polling is not supported.
+// Currently only I2C/NXT sensors support changing the polling period.
+func (i *I2cSensor) PollMs() int {
 	panic("not implemented")
 }
 
@@ -137,8 +196,14 @@ type LargeMotor struct {
 	Motor
 }
 
-func OpenLargeMotor(port string) *LargeMotor {
-	return nil
+func OpenLargeMotor(port string) (*LargeMotor, error) {
+
+	super, err := OpenMotor(port)
+	if err != nil {
+		return nil, err
+	}
+	return &LargeMotor{*super}, nil
+
 }
 
 // Any device controlled by the generic LED driver.
@@ -148,8 +213,14 @@ type Led struct {
 	IODevice
 }
 
-func OpenLed(port string) *Led {
-	return nil
+func OpenLed(port string) (*Led, error) {
+
+	io, err := OpenIODevice("leds", "<no value>", port)
+	if err != nil {
+		return nil, err
+	}
+	return &Led{IODevice: io}, nil
+
 }
 
 // Returns the maximum allowable brightness value.
@@ -158,7 +229,12 @@ func (l *Led) MaxBrightness() int {
 }
 
 // Sets the brightness level. Possible values are from 0 to `max_brightness`.
-func (l *Led) Brightness(x int) int {
+func (l *Led) SetBrightness(x int) {
+	panic("not implemented")
+}
+
+// Sets the brightness level. Possible values are from 0 to `max_brightness`.
+func (l *Led) Brightness() int {
 	panic("not implemented")
 }
 
@@ -181,21 +257,53 @@ func (l *Led) Triggers() []string {
 // You can change the brightness value of a LED independently of the timer
 // trigger. However, if you set the brightness value to 0 it will
 // also disable the `timer` trigger.
-func (l *Led) Trigger(x Selector) Selector {
+func (l *Led) SetTrigger(x Selector) {
+	panic("not implemented")
+}
+
+// Sets the led trigger. A trigger
+// is a kernel based source of led events. Triggers can either be simple or
+// complex. A simple trigger isn't configurable and is designed to slot into
+// existing subsystems with minimal additional code. Examples are the `ide-disk` and
+// `nand-disk` triggers.
+//
+// Complex triggers whilst available to all LEDs have LED specific
+// parameters and work on a per LED basis. The `timer` trigger is an example.
+// The `timer` trigger will periodically change the LED brightness between
+// 0 and the current brightness setting. The `on` and `off` time can
+// be specified via `delay_{on,off}` attributes in milliseconds.
+// You can change the brightness value of a LED independently of the timer
+// trigger. However, if you set the brightness value to 0 it will
+// also disable the `timer` trigger.
+func (l *Led) Trigger() Selector {
 	panic("not implemented")
 }
 
 // The `timer` trigger will periodically change the LED brightness between
 // 0 and the current brightness setting. The `on` time can
 // be specified via `delay_on` attribute in milliseconds.
-func (l *Led) DelayOn(x int) int {
+func (l *Led) SetDelayOn(x int) {
+	panic("not implemented")
+}
+
+// The `timer` trigger will periodically change the LED brightness between
+// 0 and the current brightness setting. The `on` time can
+// be specified via `delay_on` attribute in milliseconds.
+func (l *Led) DelayOn() int {
 	panic("not implemented")
 }
 
 // The `timer` trigger will periodically change the LED brightness between
 // 0 and the current brightness setting. The `off` time can
 // be specified via `delay_off` attribute in milliseconds.
-func (l *Led) DelayOff(x int) int {
+func (l *Led) SetDelayOff(x int) {
+	panic("not implemented")
+}
+
+// The `timer` trigger will periodically change the LED brightness between
+// 0 and the current brightness setting. The `off` time can
+// be specified via `delay_off` attribute in milliseconds.
+func (l *Led) DelayOff() int {
 	panic("not implemented")
 }
 
@@ -228,8 +336,14 @@ type LegoPort struct {
 	IODevice
 }
 
-func OpenLegoPort(port string) *LegoPort {
-	return nil
+func OpenLegoPort(port string) (*LegoPort, error) {
+
+	io, err := OpenIODevice("lego_port", "<no value>", port)
+	if err != nil {
+		return nil, err
+	}
+	return &LegoPort{IODevice: io}, nil
+
 }
 
 // Returns the name of the driver that loaded this device. You can find the
@@ -247,7 +361,15 @@ func (l *LegoPort) Modes() []string {
 // Generally speaking when the mode changes any sensor or motor devices
 // associated with the port will be removed new ones loaded, however this
 // this will depend on the individual driver implementing this class.
-func (l *LegoPort) Mode(x string) string {
+func (l *LegoPort) SetMode(x string) {
+	panic("not implemented")
+}
+
+// Reading returns the currently selected mode. Writing sets the mode.
+// Generally speaking when the mode changes any sensor or motor devices
+// associated with the port will be removed new ones loaded, however this
+// this will depend on the individual driver implementing this class.
+func (l *LegoPort) Mode() string {
 	panic("not implemented")
 }
 
@@ -262,7 +384,7 @@ func (l *LegoPort) Address() string {
 // example, since NXT/Analog sensors cannot be auto-detected, you must use
 // this attribute to load the correct driver. Returns -EOPNOTSUPP if setting a
 // device is not supported.
-func (l *LegoPort) SetDevice(x string) {
+func (l *LegoPort) SetSetDevice(x string) {
 	panic("not implemented")
 }
 
@@ -279,8 +401,14 @@ type MediumMotor struct {
 	Motor
 }
 
-func OpenMediumMotor(port string) *MediumMotor {
-	return nil
+func OpenMediumMotor(port string) (*MediumMotor, error) {
+
+	super, err := OpenMotor(port)
+	if err != nil {
+		return nil, err
+	}
+	return &MediumMotor{*super}, nil
+
 }
 
 // The motor class provides a uniform interface for using motors with
@@ -292,13 +420,19 @@ type Motor struct {
 	IODevice
 }
 
-func OpenMotor(port string) *Motor {
-	return nil
+func OpenMotor(port string) (*Motor, error) {
+
+	io, err := OpenIODevice("tacho-motor", "motor{0}", port)
+	if err != nil {
+		return nil, err
+	}
+	return &Motor{IODevice: io}, nil
+
 }
 
 // Sends a command to the motor controller. See `commands` for a list of
 // possible values.
-func (m *Motor) Command(x string) {
+func (m *Motor) SetCommand(x string) {
 	panic("not implemented")
 }
 
@@ -348,7 +482,15 @@ func (m *Motor) DutyCycle() int {
 // Units are in percent. Valid values are -100 to 100. A negative value causes
 // the motor to rotate in reverse. This value is only used when `speed_regulation`
 // is off.
-func (m *Motor) DutyCycleSp(x int) int {
+func (m *Motor) SetDutyCycleSp(x int) {
+	panic("not implemented")
+}
+
+// Writing sets the duty cycle setpoint. Reading returns the current value.
+// Units are in percent. Valid values are -100 to 100. A negative value causes
+// the motor to rotate in reverse. This value is only used when `speed_regulation`
+// is off.
+func (m *Motor) DutyCycleSp() int {
 	panic("not implemented")
 }
 
@@ -357,7 +499,16 @@ func (m *Motor) DutyCycleSp(x int) int {
 // be set correctly by the driver of a device. It You only need to change this
 // value if you are using a unsupported device. Valid values are `normal` and
 // `inversed`.
-func (m *Motor) EncoderPolarity(x string) string {
+func (m *Motor) SetEncoderPolarity(x string) {
+	panic("not implemented")
+}
+
+// Sets the polarity of the rotary encoder. This is an advanced feature to all
+// use of motors that send inversed encoder signals to the EV3. This should
+// be set correctly by the driver of a device. It You only need to change this
+// value if you are using a unsupported device. Valid values are `normal` and
+// `inversed`.
+func (m *Motor) EncoderPolarity() string {
 	panic("not implemented")
 }
 
@@ -365,7 +516,15 @@ func (m *Motor) EncoderPolarity(x string) string {
 // cycle will cause the motor to rotate clockwise. With `inversed` polarity,
 // a positive duty cycle will cause the motor to rotate counter-clockwise.
 // Valid values are `normal` and `inversed`.
-func (m *Motor) Polarity(x string) string {
+func (m *Motor) SetPolarity(x string) {
+	panic("not implemented")
+}
+
+// Sets the polarity of the motor. With `normal` polarity, a positive duty
+// cycle will cause the motor to rotate clockwise. With `inversed` polarity,
+// a positive duty cycle will cause the motor to rotate counter-clockwise.
+// Valid values are `normal` and `inversed`.
+func (m *Motor) Polarity() string {
 	panic("not implemented")
 }
 
@@ -378,22 +537,45 @@ func (m *Motor) Address() string {
 // encoder. When the motor rotates clockwise, the position will increase.
 // Likewise, rotating counter-clockwise causes the position to decrease.
 // Writing will set the position to that value.
-func (m *Motor) Position(x int) int {
+func (m *Motor) SetPosition(x int) {
+	panic("not implemented")
+}
+
+// Returns the current position of the motor in pulses of the rotary
+// encoder. When the motor rotates clockwise, the position will increase.
+// Likewise, rotating counter-clockwise causes the position to decrease.
+// Writing will set the position to that value.
+func (m *Motor) Position() int {
 	panic("not implemented")
 }
 
 // The proportional constant for the position PID.
-func (m *Motor) HoldPidKp(x int) int {
+func (m *Motor) SetHoldPidKp(x int) {
+	panic("not implemented")
+}
+
+// The proportional constant for the position PID.
+func (m *Motor) HoldPidKp() int {
 	panic("not implemented")
 }
 
 // The integral constant for the position PID.
-func (m *Motor) HoldPidKi(x int) int {
+func (m *Motor) SetHoldPidKi(x int) {
+	panic("not implemented")
+}
+
+// The integral constant for the position PID.
+func (m *Motor) HoldPidKi() int {
 	panic("not implemented")
 }
 
 // The derivative constant for the position PID.
-func (m *Motor) HoldPidKd(x int) int {
+func (m *Motor) SetHoldPidKd(x int) {
+	panic("not implemented")
+}
+
+// The derivative constant for the position PID.
+func (m *Motor) HoldPidKd() int {
 	panic("not implemented")
 }
 
@@ -401,7 +583,15 @@ func (m *Motor) HoldPidKd(x int) int {
 // commands. Reading returns the current value. Units are in tacho counts. You
 // can use the value returned by `counts_per_rot` to convert tacho counts to/from
 // rotations or degrees.
-func (m *Motor) PositionSp(x int) int {
+func (m *Motor) SetPositionSp(x int) {
+	panic("not implemented")
+}
+
+// Writing specifies the target position for the `run-to-abs-pos` and `run-to-rel-pos`
+// commands. Reading returns the current value. Units are in tacho counts. You
+// can use the value returned by `counts_per_rot` to convert tacho counts to/from
+// rotations or degrees.
+func (m *Motor) PositionSp() int {
 	panic("not implemented")
 }
 
@@ -415,7 +605,14 @@ func (m *Motor) Speed() int {
 // Writing sets the target speed in tacho counts per second used when `speed_regulation`
 // is on. Reading returns the current value.  Use the `count_per_rot` attribute
 // to convert RPM or deg/sec to tacho counts per second.
-func (m *Motor) SpeedSp(x int) int {
+func (m *Motor) SetSpeedSp(x int) {
+	panic("not implemented")
+}
+
+// Writing sets the target speed in tacho counts per second used when `speed_regulation`
+// is on. Reading returns the current value.  Use the `count_per_rot` attribute
+// to convert RPM or deg/sec to tacho counts per second.
+func (m *Motor) SpeedSp() int {
 	panic("not implemented")
 }
 
@@ -424,7 +621,16 @@ func (m *Motor) SpeedSp(x int) int {
 // sent to the motor from 0 to 100% duty cycle over the span of this setpoint
 // when starting the motor. If the maximum duty cycle is limited by `duty_cycle_sp`
 // or speed regulation, the actual ramp time duration will be less than the setpoint.
-func (m *Motor) RampUpSp(x int) int {
+func (m *Motor) SetRampUpSp(x int) {
+	panic("not implemented")
+}
+
+// Writing sets the ramp up setpoint. Reading returns the current value. Units
+// are in milliseconds. When set to a value > 0, the motor will ramp the power
+// sent to the motor from 0 to 100% duty cycle over the span of this setpoint
+// when starting the motor. If the maximum duty cycle is limited by `duty_cycle_sp`
+// or speed regulation, the actual ramp time duration will be less than the setpoint.
+func (m *Motor) RampUpSp() int {
 	panic("not implemented")
 }
 
@@ -433,7 +639,16 @@ func (m *Motor) RampUpSp(x int) int {
 // sent to the motor from 100% duty cycle down to 0 over the span of this setpoint
 // when stopping the motor. If the starting duty cycle is less than 100%, the
 // ramp time duration will be less than the full span of the setpoint.
-func (m *Motor) RampDownSp(x int) int {
+func (m *Motor) SetRampDownSp(x int) {
+	panic("not implemented")
+}
+
+// Writing sets the ramp down setpoint. Reading returns the current value. Units
+// are in milliseconds. When set to a value > 0, the motor will ramp the power
+// sent to the motor from 100% duty cycle down to 0 over the span of this setpoint
+// when stopping the motor. If the starting duty cycle is less than 100%, the
+// ramp time duration will be less than the full span of the setpoint.
+func (m *Motor) RampDownSp() int {
 	panic("not implemented")
 }
 
@@ -442,22 +657,46 @@ func (m *Motor) RampDownSp(x int) int {
 // speed specified in `speed_sp`. If speed regulation is off, the controller
 // will use the power specified in `duty_cycle_sp`. Valid values are `on` and
 // `off`.
-func (m *Motor) SpeedRegulation(x string) string {
+func (m *Motor) SetSpeedRegulation(x string) {
+	panic("not implemented")
+}
+
+// Turns speed regulation on or off. If speed regulation is on, the motor
+// controller will vary the power supplied to the motor to try to maintain the
+// speed specified in `speed_sp`. If speed regulation is off, the controller
+// will use the power specified in `duty_cycle_sp`. Valid values are `on` and
+// `off`.
+func (m *Motor) SpeedRegulation() string {
 	panic("not implemented")
 }
 
 // The proportional constant for the speed regulation PID.
-func (m *Motor) SpeedPidKp(x int) int {
+func (m *Motor) SetSpeedPidKp(x int) {
+	panic("not implemented")
+}
+
+// The proportional constant for the speed regulation PID.
+func (m *Motor) SpeedPidKp() int {
 	panic("not implemented")
 }
 
 // The integral constant for the speed regulation PID.
-func (m *Motor) SpeedPidKi(x int) int {
+func (m *Motor) SetSpeedPidKi(x int) {
+	panic("not implemented")
+}
+
+// The integral constant for the speed regulation PID.
+func (m *Motor) SpeedPidKi() int {
 	panic("not implemented")
 }
 
 // The derivative constant for the speed regulation PID.
-func (m *Motor) SpeedPidKd(x int) int {
+func (m *Motor) SetSpeedPidKd(x int) {
+	panic("not implemented")
+}
+
+// The derivative constant for the speed regulation PID.
+func (m *Motor) SpeedPidKd() int {
 	panic("not implemented")
 }
 
@@ -471,7 +710,15 @@ func (m *Motor) State() []string {
 // The value determines the motors behavior when `command` is set to `stop`.
 // Also, it determines the motors behavior when a run command completes. See
 // `stop_commands` for a list of possible values.
-func (m *Motor) StopCommand(x string) string {
+func (m *Motor) SetStopCommand(x string) {
+	panic("not implemented")
+}
+
+// Reading returns the current stop command. Writing sets the stop command.
+// The value determines the motors behavior when `command` is set to `stop`.
+// Also, it determines the motors behavior when a run command completes. See
+// `stop_commands` for a list of possible values.
+func (m *Motor) StopCommand() string {
 	panic("not implemented")
 }
 
@@ -492,7 +739,14 @@ func (m *Motor) StopCommands() []string {
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (m *Motor) TimeSp(x int) int {
+func (m *Motor) SetTimeSp(x int) {
+	panic("not implemented")
+}
+
+// Writing specifies the amount of time the motor will run when using the
+// `run-timed` command. Reading returns the current value. Units are in
+// milliseconds.
+func (m *Motor) TimeSp() int {
 	panic("not implemented")
 }
 
@@ -502,8 +756,14 @@ type PowerSupply struct {
 	IODevice
 }
 
-func OpenPowerSupply(port string) *PowerSupply {
-	return nil
+func OpenPowerSupply(port string) (*PowerSupply, error) {
+
+	io, err := OpenIODevice("power_supply", "<no value>", port)
+	if err != nil {
+		return nil, err
+	}
+	return &PowerSupply{IODevice: io}, nil
+
 }
 
 // The measured current that the battery is supplying (in microamps)
@@ -551,12 +811,18 @@ type Sensor struct {
 	IODevice
 }
 
-func OpenSensor(port string) *Sensor {
-	return nil
+func OpenSensor(port string) (*Sensor, error) {
+
+	io, err := OpenIODevice("lego-sensor", "sensor{0}", port)
+	if err != nil {
+		return nil, err
+	}
+	return &Sensor{IODevice: io}, nil
+
 }
 
 // Sends a command to the sensor.
-func (s *Sensor) Command(x string) {
+func (s *Sensor) SetCommand(x string) {
 	panic("not implemented")
 }
 
@@ -580,7 +846,13 @@ func (s *Sensor) DriverName() string {
 
 // Returns the current mode. Writing one of the values returned by `modes`
 // sets the sensor to that mode.
-func (s *Sensor) Mode(x string) string {
+func (s *Sensor) SetMode(x string) {
+	panic("not implemented")
+}
+
+// Returns the current mode. Writing one of the values returned by `modes`
+// sets the sensor to that mode.
+func (s *Sensor) Mode() string {
 	panic("not implemented")
 }
 
@@ -614,14 +886,20 @@ type ServoMotor struct {
 	IODevice
 }
 
-func OpenServoMotor(port string) *ServoMotor {
-	return nil
+func OpenServoMotor(port string) (*ServoMotor, error) {
+
+	io, err := OpenIODevice("servo-motor", "motor{0}", port)
+	if err != nil {
+		return nil, err
+	}
+	return &ServoMotor{IODevice: io}, nil
+
 }
 
 // Sets the command for the servo. Valid values are `run` and `float`. Setting
 // to `run` will cause the servo to be driven to the position_sp set in the
 // `position_sp` attribute. Setting to `float` will remove power from the motor.
-func (s *ServoMotor) Command(x string) {
+func (s *ServoMotor) SetCommand(x string) {
 	panic("not implemented")
 }
 
@@ -635,7 +913,15 @@ func (s *ServoMotor) DriverName() string {
 // servo to drive to the maximum (clockwise) position_sp. Default value is 2400.
 // Valid values are 2300 to 2700. You must write to the position_sp attribute for
 // changes to this attribute to take effect.
-func (s *ServoMotor) MaxPulseSp(x int) int {
+func (s *ServoMotor) SetMaxPulseSp(x int) {
+	panic("not implemented")
+}
+
+// Used to set the pulse size in milliseconds for the signal that tells the
+// servo to drive to the maximum (clockwise) position_sp. Default value is 2400.
+// Valid values are 2300 to 2700. You must write to the position_sp attribute for
+// changes to this attribute to take effect.
+func (s *ServoMotor) MaxPulseSp() int {
 	panic("not implemented")
 }
 
@@ -645,7 +931,17 @@ func (s *ServoMotor) MaxPulseSp(x int) int {
 // 90 degrees. On continuous rotation servo, this is the 'neutral' position_sp
 // where the motor does not turn. You must write to the position_sp attribute for
 // changes to this attribute to take effect.
-func (s *ServoMotor) MidPulseSp(x int) int {
+func (s *ServoMotor) SetMidPulseSp(x int) {
+	panic("not implemented")
+}
+
+// Used to set the pulse size in milliseconds for the signal that tells the
+// servo to drive to the mid position_sp. Default value is 1500. Valid
+// values are 1300 to 1700. For example, on a 180 degree servo, this would be
+// 90 degrees. On continuous rotation servo, this is the 'neutral' position_sp
+// where the motor does not turn. You must write to the position_sp attribute for
+// changes to this attribute to take effect.
+func (s *ServoMotor) MidPulseSp() int {
 	panic("not implemented")
 }
 
@@ -653,7 +949,15 @@ func (s *ServoMotor) MidPulseSp(x int) int {
 // servo to drive to the miniumum (counter-clockwise) position_sp. Default value
 // is 600. Valid values are 300 to 700. You must write to the position_sp
 // attribute for changes to this attribute to take effect.
-func (s *ServoMotor) MinPulseSp(x int) int {
+func (s *ServoMotor) SetMinPulseSp(x int) {
+	panic("not implemented")
+}
+
+// Used to set the pulse size in milliseconds for the signal that tells the
+// servo to drive to the miniumum (counter-clockwise) position_sp. Default value
+// is 600. Valid values are 300 to 700. You must write to the position_sp
+// attribute for changes to this attribute to take effect.
+func (s *ServoMotor) MinPulseSp() int {
 	panic("not implemented")
 }
 
@@ -661,7 +965,15 @@ func (s *ServoMotor) MinPulseSp(x int) int {
 // Setting the value to `inversed` will cause the position_sp value to be
 // inversed. i.e `-100` will correspond to `max_pulse_sp`, and `100` will
 // correspond to `min_pulse_sp`.
-func (s *ServoMotor) Polarity(x string) string {
+func (s *ServoMotor) SetPolarity(x string) {
+	panic("not implemented")
+}
+
+// Sets the polarity of the servo. Valid values are `normal` and `inversed`.
+// Setting the value to `inversed` will cause the position_sp value to be
+// inversed. i.e `-100` will correspond to `max_pulse_sp`, and `100` will
+// correspond to `min_pulse_sp`.
+func (s *ServoMotor) Polarity() string {
 	panic("not implemented")
 }
 
@@ -674,7 +986,15 @@ func (s *ServoMotor) Address() string {
 // servo to move to the specified position_sp. Units are percent. Valid values
 // are -100 to 100 (-100% to 100%) where `-100` corresponds to `min_pulse_sp`,
 // `0` corresponds to `mid_pulse_sp` and `100` corresponds to `max_pulse_sp`.
-func (s *ServoMotor) PositionSp(x int) int {
+func (s *ServoMotor) SetPositionSp(x int) {
+	panic("not implemented")
+}
+
+// Reading returns the current position_sp of the servo. Writing instructs the
+// servo to move to the specified position_sp. Units are percent. Valid values
+// are -100 to 100 (-100% to 100%) where `-100` corresponds to `min_pulse_sp`,
+// `0` corresponds to `mid_pulse_sp` and `100` corresponds to `max_pulse_sp`.
+func (s *ServoMotor) PositionSp() int {
 	panic("not implemented")
 }
 
@@ -684,7 +1004,17 @@ func (s *ServoMotor) PositionSp(x int) int {
 // to 180 degrees. Note: Some servo controllers may not support this in which
 // case reading and writing will fail with `-EOPNOTSUPP`. In continuous rotation
 // servos, this value will affect the rate_sp at which the speed ramps up or down.
-func (s *ServoMotor) RateSp(x int) int {
+func (s *ServoMotor) SetRateSp(x int) {
+	panic("not implemented")
+}
+
+// Sets the rate_sp at which the servo travels from 0 to 100.0% (half of the full
+// range of the servo). Units are in milliseconds. Example: Setting the rate_sp
+// to 1000 means that it will take a 180 degree servo 2 second to move from 0
+// to 180 degrees. Note: Some servo controllers may not support this in which
+// case reading and writing will fail with `-EOPNOTSUPP`. In continuous rotation
+// servos, this value will affect the rate_sp at which the speed ramps up or down.
+func (s *ServoMotor) RateSp() int {
 	panic("not implemented")
 }
 

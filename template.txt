@@ -1,3 +1,5 @@
+// UNDER CONSTRUCTION, NOTHING TO SEE HERE
+//
 // Package ev3 provides a Go interface for LEGO Mindstorms EV3 running ev3dev
 // (http://www.ev3dev.org).
 // This file is auto-generated for the spec defined at http://github.com/ev3dev/ev3dev-lang, version {{.meta.version}}, revision {{.meta.specRevision}}.
@@ -15,17 +17,38 @@ type {{$t|camel}} struct{
 	{{end}}
 }
 
-func Open{{$t|camel}}(port string)*{{$t|camel}}{
-	return nil
+func Open{{$t|camel}}(port string) (*{{$t|camel}}, error) {
+	{{with $v.inheritance}}
+		super, err := Open{{.|camel}}(port)
+		if err != nil{return nil, err}
+		return &{{$t|camel}}{*super}, nil
+	{{else}}
+	io, err := OpenIODevice("{{$v.systemClassName}}", "{{$v.systemDeviceNameConvention}}", port)
+	if err != nil{
+		return nil, err
+	}
+	return &{{$t|camel}}{IODevice:io}, nil
+	{{end}}
 }
 
 {{range .systemProperties}}
 
+{{if .writeAccess}}
 {{range .description}}
 // {{.}}{{end}}
-func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} ({{if .writeAccess}}x {{.type|type}}{{end}}) {{if .readAccess}}{{.type|type}}{{end}}{
+func ({{$t|recv}} *{{$t|camel}}) Set{{.systemName|camel}} (x {{.type|type}}) {
 	panic("not implemented")
 }
+{{end}}
+
+{{if .readAccess}}
+{{range .description}}
+// {{.}}{{end}}
+func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} () {{.type|type}}{
+	panic("not implemented")
+}
+{{end}}
+
 
 {{end}}
 
