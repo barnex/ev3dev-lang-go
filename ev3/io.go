@@ -1,5 +1,7 @@
 package ev3
 
+var SysFS = "/sys/class/"
+
 type IODevice struct {
 	port string
 }
