@@ -19,7 +19,6 @@ type Button struct {
 // 	/sys/class/<no value>/<no value>/
 // where {0} is replaced to match the specified port.
 func OpenButton(port string) (*Button, error) {
-
 	io, err := OpenIODevice("<no value>", "<no value>", port)
 	if err != nil {
 		return nil, err
@@ -31,98 +30,97 @@ func OpenButton(port string) (*Button, error) {
 // with no fancy controls or feedback. This includes LEGO MINDSTORMS RCX motors
 // and LEGO Power Functions motors.
 // http://www.ev3dev.org/docs/drivers/dc-motor-class/
-type DcMotor struct {
+type DCMotor struct {
 	IODevice
 }
 
-// OpenDcMotor connects to a DcMotor.
+// OpenDCMotor connects to a DC Motor.
 // The corresponding device is under
 // 	/sys/class/dc-motor/motor{0}/
 // where {0} is replaced to match the specified port.
-func OpenDcMotor(port string) (*DcMotor, error) {
-
+func OpenDCMotor(port string) (*DCMotor, error) {
 	io, err := OpenIODevice("dc-motor", "motor{0}", port)
 	if err != nil {
 		return nil, err
 	}
-	return &DcMotor{IODevice: io}, nil
+	return &DCMotor{IODevice: io}, nil
 }
 
 // Sets the command for the motor. Possible values are `run-forever`, `run-timed` and
 // `stop`. Not all commands may be supported, so be sure to check the contents
 // of the `commands` attribute.
-func (d *DcMotor) SetCommand(x string) {
+func (d *DCMotor) SetCommand(x string) {
 	d.writeString("command", x)
 }
 
 // Returns a list of commands supported by the motor
 // controller.
-func (d *DcMotor) Commands() []string {
+func (d *DCMotor) Commands() []string {
 	return d.readStringArray("commands")
 }
 
 // Returns the name of the motor driver that loaded this device. See the list
 // of [supported devices] for a list of drivers.
-func (d *DcMotor) DriverName() string {
+func (d *DCMotor) DriverName() string {
 	return d.readString("driver_name")
 }
 
 // Shows the current duty cycle of the PWM signal sent to the motor. Values
 // are -100 to 100 (-100% to 100%).
-func (d *DcMotor) DutyCycle() int {
+func (d *DCMotor) DutyCycle() int {
 	return d.readInt("duty_cycle")
 }
 
 // Writing sets the duty cycle setpoint of the PWM signal sent to the motor.
 // Valid values are -100 to 100 (-100% to 100%). Reading returns the current
 // setpoint.
-func (d *DcMotor) SetDutyCycleSP(x int) {
+func (d *DCMotor) SetDutyCycleSP(x int) {
 	d.writeInt("duty_cycle_sp", x)
 }
 
 // Writing sets the duty cycle setpoint of the PWM signal sent to the motor.
 // Valid values are -100 to 100 (-100% to 100%). Reading returns the current
 // setpoint.
-func (d *DcMotor) DutyCycleSP() int {
+func (d *DCMotor) DutyCycleSP() int {
 	return d.readInt("duty_cycle_sp")
 }
 
 // Sets the polarity of the motor. Valid values are `normal` and `inversed`.
-func (d *DcMotor) SetPolarity(x string) {
+func (d *DCMotor) SetPolarity(x string) {
 	d.writeString("polarity", x)
 }
 
 // Sets the polarity of the motor. Valid values are `normal` and `inversed`.
-func (d *DcMotor) Polarity() string {
+func (d *DCMotor) Polarity() string {
 	return d.readString("polarity")
 }
 
 // Returns the name of the port that this motor is connected to.
-func (d *DcMotor) Address() string {
+func (d *DCMotor) Address() string {
 	return d.readString("address")
 }
 
 // Sets the time in milliseconds that it take the motor to ramp down from 100%
 // to 0%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) SetRampDownSP(x int) {
+func (d *DCMotor) SetRampDownSP(x int) {
 	d.writeInt("ramp_down_sp", x)
 }
 
 // Sets the time in milliseconds that it take the motor to ramp down from 100%
 // to 0%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) RampDownSP() int {
+func (d *DCMotor) RampDownSP() int {
 	return d.readInt("ramp_down_sp")
 }
 
 // Sets the time in milliseconds that it take the motor to up ramp from 0% to
 // 100%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) SetRampUpSP(x int) {
+func (d *DCMotor) SetRampUpSP(x int) {
 	d.writeInt("ramp_up_sp", x)
 }
 
 // Sets the time in milliseconds that it take the motor to up ramp from 0% to
 // 100%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) RampUpSP() int {
+func (d *DCMotor) RampUpSP() int {
 	return d.readInt("ramp_up_sp")
 }
 
@@ -130,56 +128,56 @@ func (d *DcMotor) RampUpSP() int {
 // flags are `running` and `ramping`. `running` indicates that the motor is
 // powered. `ramping` indicates that the motor has not yet reached the
 // `duty_cycle_sp`.
-func (d *DcMotor) State() []string {
+func (d *DCMotor) State() []string {
 	return d.readStringArray("state")
 }
 
 // Sets the stop command that will be used when the motor stops. Read
 // `stop_commands` to get the list of valid values.
-func (d *DcMotor) SetStopCommand(x string) {
+func (d *DCMotor) SetStopCommand(x string) {
 	d.writeString("stop_command", x)
 }
 
 // Gets a list of stop commands. Valid values are `coast`
 // and `brake`.
-func (d *DcMotor) StopCommands() []string {
+func (d *DCMotor) StopCommands() []string {
 	return d.readStringArray("stop_commands")
 }
 
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (d *DcMotor) SetTimeSP(x int) {
+func (d *DCMotor) SetTimeSP(x int) {
 	d.writeInt("time_sp", x)
 }
 
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (d *DcMotor) TimeSP() int {
+func (d *DCMotor) TimeSP() int {
 	return d.readInt("time_sp")
 }
 
 // A generic interface to control I2C-type EV3 sensors.
-type I2cSensor struct {
+type I2CSensor struct {
 	Sensor
 }
 
-// OpenI2cSensor connects to a I2cSensor.
+// OpenI2CSensor connects to a I2C Sensor.
 // The corresponding device is under
 // 	/sys/class/lego-sensor/sensor{0}/
 // where {0} is replaced to match the specified port.
-func OpenI2cSensor(port string) (*I2cSensor, error) {
+func OpenI2CSensor(port string) (*I2CSensor, error) {
 	super, err := OpenSensor(port)
 	if err != nil {
 		return nil, err
 	}
-	return &I2cSensor{*super}, nil
+	return &I2CSensor{*super}, nil
 }
 
 // Returns the firmware version of the sensor if available. Currently only
 // I2C/NXT sensors support this.
-func (i *I2cSensor) FWVersion() string {
+func (i *I2CSensor) FWVersion() string {
 	return i.readString("fw_version")
 }
 
@@ -187,7 +185,7 @@ func (i *I2cSensor) FWVersion() string {
 // polling period. Setting to 0 disables polling. Minimum value is hard
 // coded as 50 msec. Returns -EOPNOTSUPP if changing polling is not supported.
 // Currently only I2C/NXT sensors support changing the polling period.
-func (i *I2cSensor) SetPollMS(x int) {
+func (i *I2CSensor) SetPollMS(x int) {
 	i.writeInt("poll_ms", x)
 }
 
@@ -195,7 +193,7 @@ func (i *I2cSensor) SetPollMS(x int) {
 // polling period. Setting to 0 disables polling. Minimum value is hard
 // coded as 50 msec. Returns -EOPNOTSUPP if changing polling is not supported.
 // Currently only I2C/NXT sensors support changing the polling period.
-func (i *I2cSensor) PollMS() int {
+func (i *I2CSensor) PollMS() int {
 	return i.readInt("poll_ms")
 }
 
@@ -204,7 +202,7 @@ type LargeMotor struct {
 	Motor
 }
 
-// OpenLargeMotor connects to a LargeMotor.
+// OpenLargeMotor connects to a Large Motor.
 // The corresponding device is under
 // 	/sys/class/<no value>/<no value>/
 // where {0} is replaced to match the specified port.
@@ -219,40 +217,39 @@ func OpenLargeMotor(port string) (*LargeMotor, error) {
 // Any device controlled by the generic LED driver.
 // See https://www.kernel.org/doc/Documentation/leds/leds-class.txt
 // for more details.
-type Led struct {
+type LED struct {
 	IODevice
 }
 
-// OpenLed connects to a Led.
+// OpenLED connects to a LED.
 // The corresponding device is under
 // 	/sys/class/leds/<no value>/
 // where {0} is replaced to match the specified port.
-func OpenLed(port string) (*Led, error) {
-
+func OpenLED(port string) (*LED, error) {
 	io, err := OpenIODevice("leds", "<no value>", port)
 	if err != nil {
 		return nil, err
 	}
-	return &Led{IODevice: io}, nil
+	return &LED{IODevice: io}, nil
 }
 
 // Returns the maximum allowable brightness value.
-func (l *Led) MaxBrightness() int {
+func (l *LED) MaxBrightness() int {
 	return l.readInt("max_brightness")
 }
 
 // Sets the brightness level. Possible values are from 0 to `max_brightness`.
-func (l *Led) SetBrightness(x int) {
+func (l *LED) SetBrightness(x int) {
 	l.writeInt("brightness", x)
 }
 
 // Sets the brightness level. Possible values are from 0 to `max_brightness`.
-func (l *Led) Brightness() int {
+func (l *LED) Brightness() int {
 	return l.readInt("brightness")
 }
 
 // Returns a list of available triggers.
-func (l *Led) Triggers() []string {
+func (l *LED) Triggers() []string {
 	return l.readStringArray("trigger")
 }
 
@@ -270,7 +267,7 @@ func (l *Led) Triggers() []string {
 // You can change the brightness value of a LED independently of the timer
 // trigger. However, if you set the brightness value to 0 it will
 // also disable the `timer` trigger.
-func (l *Led) SetTrigger(x string) {
+func (l *LED) SetTrigger(x string) {
 	l.writeStringSelector("trigger", x)
 }
 
@@ -288,35 +285,35 @@ func (l *Led) SetTrigger(x string) {
 // You can change the brightness value of a LED independently of the timer
 // trigger. However, if you set the brightness value to 0 it will
 // also disable the `timer` trigger.
-func (l *Led) Trigger() string {
+func (l *LED) Trigger() string {
 	return l.readStringSelector("trigger")
 }
 
 // The `timer` trigger will periodically change the LED brightness between
 // 0 and the current brightness setting. The `on` time can
 // be specified via `delay_on` attribute in milliseconds.
-func (l *Led) SetDelayOn(x int) {
+func (l *LED) SetDelayOn(x int) {
 	l.writeInt("delay_on", x)
 }
 
 // The `timer` trigger will periodically change the LED brightness between
 // 0 and the current brightness setting. The `on` time can
 // be specified via `delay_on` attribute in milliseconds.
-func (l *Led) DelayOn() int {
+func (l *LED) DelayOn() int {
 	return l.readInt("delay_on")
 }
 
 // The `timer` trigger will periodically change the LED brightness between
 // 0 and the current brightness setting. The `off` time can
 // be specified via `delay_off` attribute in milliseconds.
-func (l *Led) SetDelayOff(x int) {
+func (l *LED) SetDelayOff(x int) {
 	l.writeInt("delay_off", x)
 }
 
 // The `timer` trigger will periodically change the LED brightness between
 // 0 and the current brightness setting. The `off` time can
 // be specified via `delay_off` attribute in milliseconds.
-func (l *Led) DelayOff() int {
+func (l *LED) DelayOff() int {
 	return l.readInt("delay_off")
 }
 
@@ -349,12 +346,11 @@ type LegoPort struct {
 	IODevice
 }
 
-// OpenLegoPort connects to a LegoPort.
+// OpenLegoPort connects to a Lego Port.
 // The corresponding device is under
 // 	/sys/class/lego_port/<no value>/
 // where {0} is replaced to match the specified port.
 func OpenLegoPort(port string) (*LegoPort, error) {
-
 	io, err := OpenIODevice("lego_port", "<no value>", port)
 	if err != nil {
 		return nil, err
@@ -417,7 +413,7 @@ type MediumMotor struct {
 	Motor
 }
 
-// OpenMediumMotor connects to a MediumMotor.
+// OpenMediumMotor connects to a Medium Motor.
 // The corresponding device is under
 // 	/sys/class/<no value>/<no value>/
 // where {0} is replaced to match the specified port.
@@ -443,7 +439,6 @@ type Motor struct {
 // 	/sys/class/tacho-motor/motor{0}/
 // where {0} is replaced to match the specified port.
 func OpenMotor(port string) (*Motor, error) {
-
 	io, err := OpenIODevice("tacho-motor", "motor{0}", port)
 	if err != nil {
 		return nil, err
@@ -777,12 +772,11 @@ type PowerSupply struct {
 	IODevice
 }
 
-// OpenPowerSupply connects to a PowerSupply.
+// OpenPowerSupply connects to a Power Supply.
 // The corresponding device is under
 // 	/sys/class/power_supply/<no value>/
 // where {0} is replaced to match the specified port.
 func OpenPowerSupply(port string) (*PowerSupply, error) {
-
 	io, err := OpenIODevice("power_supply", "<no value>", port)
 	if err != nil {
 		return nil, err
@@ -840,7 +834,6 @@ type Sensor struct {
 // 	/sys/class/lego-sensor/sensor{0}/
 // where {0} is replaced to match the specified port.
 func OpenSensor(port string) (*Sensor, error) {
-
 	io, err := OpenIODevice("lego-sensor", "sensor{0}", port)
 	if err != nil {
 		return nil, err
@@ -913,12 +906,11 @@ type ServoMotor struct {
 	IODevice
 }
 
-// OpenServoMotor connects to a ServoMotor.
+// OpenServoMotor connects to a Servo Motor.
 // The corresponding device is under
 // 	/sys/class/servo-motor/motor{0}/
 // where {0} is replaced to match the specified port.
 func OpenServoMotor(port string) (*ServoMotor, error) {
-
 	io, err := OpenIODevice("servo-motor", "motor{0}", port)
 	if err != nil {
 		return nil, err

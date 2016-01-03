@@ -7,46 +7,47 @@
 package ev3
 
 {{range $t,$v := .classes}} 
-
+{{$T := $v.friendlyName|camel}}
 
 {{range .description}}
 // {{.|doc}}{{end}}{{with .docsLink}}
 // {{.}}{{end}}
-type {{$t|camel}} struct{
+type {{$T}} struct{
 	{{with $v.inheritance}}{{.|camel}}{{else}}IODevice
 	{{end}}
 }
 
-// Open{{$t|camel}} connects to a {{$t|camel}}.
+// Open{{$T}} connects to a {{$v.friendlyName}}.
 // The corresponding device is under
 // 	/sys/class/{{$v.systemClassName}}/{{$v.systemDeviceNameConvention}}/
 // where {0} is replaced to match the specified port.
-func Open{{$t|camel}}(port string) (*{{$t|camel}}, error) {
-	{{with $v.inheritance}} super, err := Open{{.|camel}}(port)
+func Open{{$T}}(port string) (*{{$T}}, error) { {{with $v.inheritance}} super, err := Open{{.|camel}}(port)
 		if err != nil{return nil, err}
-		return &{{$t|camel}}{*super}, nil {{else}}
+		return &{{$T}}{*super}, nil {{else}}
 	io, err := OpenIODevice("{{$v.systemClassName}}", "{{$v.systemDeviceNameConvention}}", port)
 	if err != nil{
 		return nil, err
 	}
-	return &{{$t|camel}}{IODevice:io}, nil {{end}}
+	return &{{$T}}{IODevice:io}, nil {{end}}
 }
 
 {{range .systemProperties}}
 
+{{$recv := $t|recv}}
+
 {{if .writeAccess}}
 {{range .description}}
 // {{.|doc}}{{end}}
-func ({{$t|recv}} *{{$t|camel}}) Set{{.name|camel}} (x {{.type|type}}) {
-	{{$t|recv}}.write{{.type|camel}}("{{.systemName}}", x)
+func ({{$recv}} *{{$T}}) Set{{.name|camel}} (x {{.type|type}}) {
+	{{$recv}}.write{{.type|camel}}("{{.systemName}}", x)
 }
 {{end}}
 
 {{if .readAccess}}
 {{range .description}}
 // {{.|doc}}{{end}}
-func ({{$t|recv}} *{{$t|camel}}) {{.name|camel}} () {{.type|type}}{
-	return {{$t|recv}}.read{{.type|camel}}("{{.systemName}}")
+func ({{$recv}} *{{$T}}) {{.name|camel}} () {{.type|type}}{
+	return {{$recv}}.read{{.type|camel}}("{{.systemName}}")
 }
 {{end}}
 
