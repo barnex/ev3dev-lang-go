@@ -17,18 +17,19 @@ type {{$t|camel}} struct{
 	{{end}}
 }
 
+// Open{{$t|camel}} connects to a {{$t|camel}}.
+// The corresponding device is under
+// 	/sys/class/{{$v.systemClassName}}/{{$v.systemDeviceNameConvention}}/
+// where {0} is replaced to match the specified port.
 func Open{{$t|camel}}(port string) (*{{$t|camel}}, error) {
-	{{with $v.inheritance}}
-		super, err := Open{{.|camel}}(port)
+	{{with $v.inheritance}} super, err := Open{{.|camel}}(port)
 		if err != nil{return nil, err}
-		return &{{$t|camel}}{*super}, nil
-	{{else}}
+		return &{{$t|camel}}{*super}, nil {{else}}
 	io, err := OpenIODevice("{{$v.systemClassName}}", "{{$v.systemDeviceNameConvention}}", port)
 	if err != nil{
 		return nil, err
 	}
-	return &{{$t|camel}}{IODevice:io}, nil
-	{{end}}
+	return &{{$t|camel}}{IODevice:io}, nil {{end}}
 }
 
 {{range .systemProperties}}

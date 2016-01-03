@@ -14,6 +14,10 @@ type Button struct {
 	IODevice
 }
 
+// OpenButton connects to a Button.
+// The corresponding device is under
+// 	/sys/class/<no value>/<no value>/
+// where {0} is replaced to match the specified port.
 func OpenButton(port string) (*Button, error) {
 
 	io, err := OpenIODevice("<no value>", "<no value>", port)
@@ -21,7 +25,6 @@ func OpenButton(port string) (*Button, error) {
 		return nil, err
 	}
 	return &Button{IODevice: io}, nil
-
 }
 
 // The DC motor class provides a uniform interface for using regular DC motors
@@ -32,6 +35,10 @@ type DcMotor struct {
 	IODevice
 }
 
+// OpenDcMotor connects to a DcMotor.
+// The corresponding device is under
+// 	/sys/class/dc-motor/motor{0}/
+// where {0} is replaced to match the specified port.
 func OpenDcMotor(port string) (*DcMotor, error) {
 
 	io, err := OpenIODevice("dc-motor", "motor{0}", port)
@@ -39,7 +46,6 @@ func OpenDcMotor(port string) (*DcMotor, error) {
 		return nil, err
 	}
 	return &DcMotor{IODevice: io}, nil
-
 }
 
 // Sets the command for the motor. Possible values are `run-forever`, `run-timed` and
@@ -159,14 +165,16 @@ type I2cSensor struct {
 	Sensor
 }
 
+// OpenI2cSensor connects to a I2cSensor.
+// The corresponding device is under
+// 	/sys/class/lego-sensor/sensor{0}/
+// where {0} is replaced to match the specified port.
 func OpenI2cSensor(port string) (*I2cSensor, error) {
-
 	super, err := OpenSensor(port)
 	if err != nil {
 		return nil, err
 	}
 	return &I2cSensor{*super}, nil
-
 }
 
 // Returns the firmware version of the sensor if available. Currently only
@@ -196,14 +204,16 @@ type LargeMotor struct {
 	Motor
 }
 
+// OpenLargeMotor connects to a LargeMotor.
+// The corresponding device is under
+// 	/sys/class/<no value>/<no value>/
+// where {0} is replaced to match the specified port.
 func OpenLargeMotor(port string) (*LargeMotor, error) {
-
 	super, err := OpenMotor(port)
 	if err != nil {
 		return nil, err
 	}
 	return &LargeMotor{*super}, nil
-
 }
 
 // Any device controlled by the generic LED driver.
@@ -213,6 +223,10 @@ type Led struct {
 	IODevice
 }
 
+// OpenLed connects to a Led.
+// The corresponding device is under
+// 	/sys/class/leds/<no value>/
+// where {0} is replaced to match the specified port.
 func OpenLed(port string) (*Led, error) {
 
 	io, err := OpenIODevice("leds", "<no value>", port)
@@ -220,7 +234,6 @@ func OpenLed(port string) (*Led, error) {
 		return nil, err
 	}
 	return &Led{IODevice: io}, nil
-
 }
 
 // Returns the maximum allowable brightness value.
@@ -336,6 +349,10 @@ type LegoPort struct {
 	IODevice
 }
 
+// OpenLegoPort connects to a LegoPort.
+// The corresponding device is under
+// 	/sys/class/lego_port/<no value>/
+// where {0} is replaced to match the specified port.
 func OpenLegoPort(port string) (*LegoPort, error) {
 
 	io, err := OpenIODevice("lego_port", "<no value>", port)
@@ -343,7 +360,6 @@ func OpenLegoPort(port string) (*LegoPort, error) {
 		return nil, err
 	}
 	return &LegoPort{IODevice: io}, nil
-
 }
 
 // Returns the name of the driver that loaded this device. You can find the
@@ -401,14 +417,16 @@ type MediumMotor struct {
 	Motor
 }
 
+// OpenMediumMotor connects to a MediumMotor.
+// The corresponding device is under
+// 	/sys/class/<no value>/<no value>/
+// where {0} is replaced to match the specified port.
 func OpenMediumMotor(port string) (*MediumMotor, error) {
-
 	super, err := OpenMotor(port)
 	if err != nil {
 		return nil, err
 	}
 	return &MediumMotor{*super}, nil
-
 }
 
 // The motor class provides a uniform interface for using motors with
@@ -420,6 +438,10 @@ type Motor struct {
 	IODevice
 }
 
+// OpenMotor connects to a Motor.
+// The corresponding device is under
+// 	/sys/class/tacho-motor/motor{0}/
+// where {0} is replaced to match the specified port.
 func OpenMotor(port string) (*Motor, error) {
 
 	io, err := OpenIODevice("tacho-motor", "motor{0}", port)
@@ -427,7 +449,6 @@ func OpenMotor(port string) (*Motor, error) {
 		return nil, err
 	}
 	return &Motor{IODevice: io}, nil
-
 }
 
 // Sends a command to the motor controller. See `commands` for a list of
@@ -442,19 +463,19 @@ func (m *Motor) SetCommand(x string) {
 //
 //  - `run-forever` will cause the motor to run until another command is sent.
 //  - `run-to-abs-pos` will run to an absolute position specified by `position_sp`
-//      and then stop using the command specified in `stop_command`.
+//     and then stop using the command specified in `stop_command`.
 //  - `run-to-rel-pos` will run to a position relative to the current `position` value.
-//      The new position will be current `position` + `position_sp`. When the new
-//      position is reached, the motor will stop using the command specified by `stop_command`.
+//     The new position will be current `position` + `position_sp`. When the new
+//     position is reached, the motor will stop using the command specified by `stop_command`.
 //  - `run-timed` will run the motor for the amount of time specified in `time_sp`
-//      and then stop the motor using the command specified by `stop_command`.
+//     and then stop the motor using the command specified by `stop_command`.
 //  - `run-direct` will run the motor at the duty cycle specified by `duty_cycle_sp`.
-//      Unlike other run commands, changing `duty_cycle_sp` while running *will*
-//      take effect immediately.
+//     Unlike other run commands, changing `duty_cycle_sp` while running *will*
+//     take effect immediately.
 //  - `stop` will stop any of the run commands before they are complete using the
-//      command specified by `stop_command`.
+//     command specified by `stop_command`.
 //  - `reset` will reset all of the motor parameter attributes to their default value.
-//      This will also have the effect of stopping the motor.
+//     This will also have the effect of stopping the motor.
 func (m *Motor) Commands() []string {
 	return m.readStringArray("commands")
 }
@@ -756,6 +777,10 @@ type PowerSupply struct {
 	IODevice
 }
 
+// OpenPowerSupply connects to a PowerSupply.
+// The corresponding device is under
+// 	/sys/class/power_supply/<no value>/
+// where {0} is replaced to match the specified port.
 func OpenPowerSupply(port string) (*PowerSupply, error) {
 
 	io, err := OpenIODevice("power_supply", "<no value>", port)
@@ -763,7 +788,6 @@ func OpenPowerSupply(port string) (*PowerSupply, error) {
 		return nil, err
 	}
 	return &PowerSupply{IODevice: io}, nil
-
 }
 
 // The measured current that the battery is supplying (in microamps)
@@ -811,6 +835,10 @@ type Sensor struct {
 	IODevice
 }
 
+// OpenSensor connects to a Sensor.
+// The corresponding device is under
+// 	/sys/class/lego-sensor/sensor{0}/
+// where {0} is replaced to match the specified port.
 func OpenSensor(port string) (*Sensor, error) {
 
 	io, err := OpenIODevice("lego-sensor", "sensor{0}", port)
@@ -818,7 +846,6 @@ func OpenSensor(port string) (*Sensor, error) {
 		return nil, err
 	}
 	return &Sensor{IODevice: io}, nil
-
 }
 
 // Sends a command to the sensor.
@@ -886,6 +913,10 @@ type ServoMotor struct {
 	IODevice
 }
 
+// OpenServoMotor connects to a ServoMotor.
+// The corresponding device is under
+// 	/sys/class/servo-motor/motor{0}/
+// where {0} is replaced to match the specified port.
 func OpenServoMotor(port string) (*ServoMotor, error) {
 
 	io, err := OpenIODevice("servo-motor", "motor{0}", port)
@@ -893,7 +924,6 @@ func OpenServoMotor(port string) (*ServoMotor, error) {
 		return nil, err
 	}
 	return &ServoMotor{IODevice: io}, nil
-
 }
 
 // Sets the command for the servo. Valid values are `run` and `float`. Setting
