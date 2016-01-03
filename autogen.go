@@ -15,10 +15,10 @@ func main() {
 	templFile := flag.Arg(0)
 	t := template.New(templFile)
 	t.Funcs(map[string]interface{}{
-		"camel":  camelCase,
+		"camel":  toCamelCase,
 		"doc":    toGoDoc,
 		"recv":   firstLetter,
-		"type":    toType,
+		"type":   toType,
 	})
 	t, err := t.ParseFiles(templFile)
 	if err != nil {
@@ -43,17 +43,11 @@ func main() {
 	}
 }
 
-func camelCase(x string) string {
-	return camelCaseImpl(x, "_ ")
-}
-
-func camelCaseImpl(x string, sep string) string {
+func toCamelCase(x string) string {
+	const sep = " _"
 	cc := ""
 	needUp := true
 	for _, c := range x {
-		if c == '/' {
-			continue
-		}
 		if !strings.Contains(sep, string(c)) {
 			if needUp {
 				cc += string(unicode.ToUpper(c))
