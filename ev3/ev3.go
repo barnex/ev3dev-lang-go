@@ -76,14 +76,14 @@ func (d *DcMotor) DutyCycle() int {
 // Writing sets the duty cycle setpoint of the PWM signal sent to the motor.
 // Valid values are -100 to 100 (-100% to 100%). Reading returns the current
 // setpoint.
-func (d *DcMotor) SetDutyCycleSp(x int) {
+func (d *DcMotor) SetDutyCycleSP(x int) {
 	d.writeInt("duty_cycle_sp", x)
 }
 
 // Writing sets the duty cycle setpoint of the PWM signal sent to the motor.
 // Valid values are -100 to 100 (-100% to 100%). Reading returns the current
 // setpoint.
-func (d *DcMotor) DutyCycleSp() int {
+func (d *DcMotor) DutyCycleSP() int {
 	return d.readInt("duty_cycle_sp")
 }
 
@@ -104,25 +104,25 @@ func (d *DcMotor) Address() string {
 
 // Sets the time in milliseconds that it take the motor to ramp down from 100%
 // to 0%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) SetRampDownSp(x int) {
+func (d *DcMotor) SetRampDownSP(x int) {
 	d.writeInt("ramp_down_sp", x)
 }
 
 // Sets the time in milliseconds that it take the motor to ramp down from 100%
 // to 0%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) RampDownSp() int {
+func (d *DcMotor) RampDownSP() int {
 	return d.readInt("ramp_down_sp")
 }
 
 // Sets the time in milliseconds that it take the motor to up ramp from 0% to
 // 100%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) SetRampUpSp(x int) {
+func (d *DcMotor) SetRampUpSP(x int) {
 	d.writeInt("ramp_up_sp", x)
 }
 
 // Sets the time in milliseconds that it take the motor to up ramp from 0% to
 // 100%. Valid values are 0 to 10000 (10 seconds). Default is 0.
-func (d *DcMotor) RampUpSp() int {
+func (d *DcMotor) RampUpSP() int {
 	return d.readInt("ramp_up_sp")
 }
 
@@ -149,14 +149,14 @@ func (d *DcMotor) StopCommands() []string {
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (d *DcMotor) SetTimeSp(x int) {
+func (d *DcMotor) SetTimeSP(x int) {
 	d.writeInt("time_sp", x)
 }
 
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (d *DcMotor) TimeSp() int {
+func (d *DcMotor) TimeSP() int {
 	return d.readInt("time_sp")
 }
 
@@ -179,7 +179,7 @@ func OpenI2cSensor(port string) (*I2cSensor, error) {
 
 // Returns the firmware version of the sensor if available. Currently only
 // I2C/NXT sensors support this.
-func (i *I2cSensor) FwVersion() string {
+func (i *I2cSensor) FWVersion() string {
 	return i.readString("fw_version")
 }
 
@@ -187,7 +187,7 @@ func (i *I2cSensor) FwVersion() string {
 // polling period. Setting to 0 disables polling. Minimum value is hard
 // coded as 50 msec. Returns -EOPNOTSUPP if changing polling is not supported.
 // Currently only I2C/NXT sensors support changing the polling period.
-func (i *I2cSensor) SetPollMs(x int) {
+func (i *I2cSensor) SetPollMS(x int) {
 	i.writeInt("poll_ms", x)
 }
 
@@ -195,7 +195,7 @@ func (i *I2cSensor) SetPollMs(x int) {
 // polling period. Setting to 0 disables polling. Minimum value is hard
 // coded as 50 msec. Returns -EOPNOTSUPP if changing polling is not supported.
 // Currently only I2C/NXT sensors support changing the polling period.
-func (i *I2cSensor) PollMs() int {
+func (i *I2cSensor) PollMS() int {
 	return i.readInt("poll_ms")
 }
 
@@ -253,7 +253,7 @@ func (l *Led) Brightness() int {
 
 // Returns a list of available triggers.
 func (l *Led) Triggers() []string {
-	return l.readStringArray("triggers")
+	return l.readStringArray("trigger")
 }
 
 // Sets the led trigger. A trigger
@@ -503,7 +503,7 @@ func (m *Motor) DutyCycle() int {
 // Units are in percent. Valid values are -100 to 100. A negative value causes
 // the motor to rotate in reverse. This value is only used when `speed_regulation`
 // is off.
-func (m *Motor) SetDutyCycleSp(x int) {
+func (m *Motor) SetDutyCycleSP(x int) {
 	m.writeInt("duty_cycle_sp", x)
 }
 
@@ -511,7 +511,7 @@ func (m *Motor) SetDutyCycleSp(x int) {
 // Units are in percent. Valid values are -100 to 100. A negative value causes
 // the motor to rotate in reverse. This value is only used when `speed_regulation`
 // is off.
-func (m *Motor) DutyCycleSp() int {
+func (m *Motor) DutyCycleSP() int {
 	return m.readInt("duty_cycle_sp")
 }
 
@@ -571,32 +571,32 @@ func (m *Motor) Position() int {
 }
 
 // The proportional constant for the position PID.
-func (m *Motor) SetHoldPidKp(x int) {
+func (m *Motor) SetPositionP(x int) {
 	m.writeInt("hold_pid/Kp", x)
 }
 
 // The proportional constant for the position PID.
-func (m *Motor) HoldPidKp() int {
+func (m *Motor) PositionP() int {
 	return m.readInt("hold_pid/Kp")
 }
 
 // The integral constant for the position PID.
-func (m *Motor) SetHoldPidKi(x int) {
+func (m *Motor) SetPositionI(x int) {
 	m.writeInt("hold_pid/Ki", x)
 }
 
 // The integral constant for the position PID.
-func (m *Motor) HoldPidKi() int {
+func (m *Motor) PositionI() int {
 	return m.readInt("hold_pid/Ki")
 }
 
 // The derivative constant for the position PID.
-func (m *Motor) SetHoldPidKd(x int) {
+func (m *Motor) SetPositionD(x int) {
 	m.writeInt("hold_pid/Kd", x)
 }
 
 // The derivative constant for the position PID.
-func (m *Motor) HoldPidKd() int {
+func (m *Motor) PositionD() int {
 	return m.readInt("hold_pid/Kd")
 }
 
@@ -604,7 +604,7 @@ func (m *Motor) HoldPidKd() int {
 // commands. Reading returns the current value. Units are in tacho counts. You
 // can use the value returned by `counts_per_rot` to convert tacho counts to/from
 // rotations or degrees.
-func (m *Motor) SetPositionSp(x int) {
+func (m *Motor) SetPositionSP(x int) {
 	m.writeInt("position_sp", x)
 }
 
@@ -612,7 +612,7 @@ func (m *Motor) SetPositionSp(x int) {
 // commands. Reading returns the current value. Units are in tacho counts. You
 // can use the value returned by `counts_per_rot` to convert tacho counts to/from
 // rotations or degrees.
-func (m *Motor) PositionSp() int {
+func (m *Motor) PositionSP() int {
 	return m.readInt("position_sp")
 }
 
@@ -626,14 +626,14 @@ func (m *Motor) Speed() int {
 // Writing sets the target speed in tacho counts per second used when `speed_regulation`
 // is on. Reading returns the current value.  Use the `count_per_rot` attribute
 // to convert RPM or deg/sec to tacho counts per second.
-func (m *Motor) SetSpeedSp(x int) {
+func (m *Motor) SetSpeedSP(x int) {
 	m.writeInt("speed_sp", x)
 }
 
 // Writing sets the target speed in tacho counts per second used when `speed_regulation`
 // is on. Reading returns the current value.  Use the `count_per_rot` attribute
 // to convert RPM or deg/sec to tacho counts per second.
-func (m *Motor) SpeedSp() int {
+func (m *Motor) SpeedSP() int {
 	return m.readInt("speed_sp")
 }
 
@@ -642,7 +642,7 @@ func (m *Motor) SpeedSp() int {
 // sent to the motor from 0 to 100% duty cycle over the span of this setpoint
 // when starting the motor. If the maximum duty cycle is limited by `duty_cycle_sp`
 // or speed regulation, the actual ramp time duration will be less than the setpoint.
-func (m *Motor) SetRampUpSp(x int) {
+func (m *Motor) SetRampUpSP(x int) {
 	m.writeInt("ramp_up_sp", x)
 }
 
@@ -651,7 +651,7 @@ func (m *Motor) SetRampUpSp(x int) {
 // sent to the motor from 0 to 100% duty cycle over the span of this setpoint
 // when starting the motor. If the maximum duty cycle is limited by `duty_cycle_sp`
 // or speed regulation, the actual ramp time duration will be less than the setpoint.
-func (m *Motor) RampUpSp() int {
+func (m *Motor) RampUpSP() int {
 	return m.readInt("ramp_up_sp")
 }
 
@@ -660,7 +660,7 @@ func (m *Motor) RampUpSp() int {
 // sent to the motor from 100% duty cycle down to 0 over the span of this setpoint
 // when stopping the motor. If the starting duty cycle is less than 100%, the
 // ramp time duration will be less than the full span of the setpoint.
-func (m *Motor) SetRampDownSp(x int) {
+func (m *Motor) SetRampDownSP(x int) {
 	m.writeInt("ramp_down_sp", x)
 }
 
@@ -669,7 +669,7 @@ func (m *Motor) SetRampDownSp(x int) {
 // sent to the motor from 100% duty cycle down to 0 over the span of this setpoint
 // when stopping the motor. If the starting duty cycle is less than 100%, the
 // ramp time duration will be less than the full span of the setpoint.
-func (m *Motor) RampDownSp() int {
+func (m *Motor) RampDownSP() int {
 	return m.readInt("ramp_down_sp")
 }
 
@@ -678,7 +678,7 @@ func (m *Motor) RampDownSp() int {
 // speed specified in `speed_sp`. If speed regulation is off, the controller
 // will use the power specified in `duty_cycle_sp`. Valid values are `on` and
 // `off`.
-func (m *Motor) SetSpeedRegulation(x string) {
+func (m *Motor) SetSpeedRegulationEnabled(x string) {
 	m.writeString("speed_regulation", x)
 }
 
@@ -687,37 +687,37 @@ func (m *Motor) SetSpeedRegulation(x string) {
 // speed specified in `speed_sp`. If speed regulation is off, the controller
 // will use the power specified in `duty_cycle_sp`. Valid values are `on` and
 // `off`.
-func (m *Motor) SpeedRegulation() string {
+func (m *Motor) SpeedRegulationEnabled() string {
 	return m.readString("speed_regulation")
 }
 
 // The proportional constant for the speed regulation PID.
-func (m *Motor) SetSpeedPidKp(x int) {
+func (m *Motor) SetSpeedRegulationP(x int) {
 	m.writeInt("speed_pid/Kp", x)
 }
 
 // The proportional constant for the speed regulation PID.
-func (m *Motor) SpeedPidKp() int {
+func (m *Motor) SpeedRegulationP() int {
 	return m.readInt("speed_pid/Kp")
 }
 
 // The integral constant for the speed regulation PID.
-func (m *Motor) SetSpeedPidKi(x int) {
+func (m *Motor) SetSpeedRegulationI(x int) {
 	m.writeInt("speed_pid/Ki", x)
 }
 
 // The integral constant for the speed regulation PID.
-func (m *Motor) SpeedPidKi() int {
+func (m *Motor) SpeedRegulationI() int {
 	return m.readInt("speed_pid/Ki")
 }
 
 // The derivative constant for the speed regulation PID.
-func (m *Motor) SetSpeedPidKd(x int) {
+func (m *Motor) SetSpeedRegulationD(x int) {
 	m.writeInt("speed_pid/Kd", x)
 }
 
 // The derivative constant for the speed regulation PID.
-func (m *Motor) SpeedPidKd() int {
+func (m *Motor) SpeedRegulationD() int {
 	return m.readInt("speed_pid/Kd")
 }
 
@@ -760,14 +760,14 @@ func (m *Motor) StopCommands() []string {
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (m *Motor) SetTimeSp(x int) {
+func (m *Motor) SetTimeSP(x int) {
 	m.writeInt("time_sp", x)
 }
 
 // Writing specifies the amount of time the motor will run when using the
 // `run-timed` command. Reading returns the current value. Units are in
 // milliseconds.
-func (m *Motor) TimeSp() int {
+func (m *Motor) TimeSP() int {
 	return m.readInt("time_sp")
 }
 
@@ -791,20 +791,20 @@ func OpenPowerSupply(port string) (*PowerSupply, error) {
 }
 
 // The measured current that the battery is supplying (in microamps)
-func (p *PowerSupply) CurrentNow() int {
+func (p *PowerSupply) MeasuredCurrent() int {
 	return p.readInt("current_now")
 }
 
 // The measured voltage that the battery is supplying (in microvolts)
-func (p *PowerSupply) VoltageNow() int {
+func (p *PowerSupply) MeasuredVoltage() int {
 	return p.readInt("voltage_now")
 }
 
-func (p *PowerSupply) VoltageMaxDesign() int {
+func (p *PowerSupply) MaxVoltage() int {
 	return p.readInt("voltage_max_design")
 }
 
-func (p *PowerSupply) VoltageMinDesign() int {
+func (p *PowerSupply) MinVoltage() int {
 	return p.readInt("voltage_min_design")
 }
 
@@ -943,7 +943,7 @@ func (s *ServoMotor) DriverName() string {
 // servo to drive to the maximum (clockwise) position_sp. Default value is 2400.
 // Valid values are 2300 to 2700. You must write to the position_sp attribute for
 // changes to this attribute to take effect.
-func (s *ServoMotor) SetMaxPulseSp(x int) {
+func (s *ServoMotor) SetMaxPulseSP(x int) {
 	s.writeInt("max_pulse_sp", x)
 }
 
@@ -951,7 +951,7 @@ func (s *ServoMotor) SetMaxPulseSp(x int) {
 // servo to drive to the maximum (clockwise) position_sp. Default value is 2400.
 // Valid values are 2300 to 2700. You must write to the position_sp attribute for
 // changes to this attribute to take effect.
-func (s *ServoMotor) MaxPulseSp() int {
+func (s *ServoMotor) MaxPulseSP() int {
 	return s.readInt("max_pulse_sp")
 }
 
@@ -961,7 +961,7 @@ func (s *ServoMotor) MaxPulseSp() int {
 // 90 degrees. On continuous rotation servo, this is the 'neutral' position_sp
 // where the motor does not turn. You must write to the position_sp attribute for
 // changes to this attribute to take effect.
-func (s *ServoMotor) SetMidPulseSp(x int) {
+func (s *ServoMotor) SetMidPulseSP(x int) {
 	s.writeInt("mid_pulse_sp", x)
 }
 
@@ -971,7 +971,7 @@ func (s *ServoMotor) SetMidPulseSp(x int) {
 // 90 degrees. On continuous rotation servo, this is the 'neutral' position_sp
 // where the motor does not turn. You must write to the position_sp attribute for
 // changes to this attribute to take effect.
-func (s *ServoMotor) MidPulseSp() int {
+func (s *ServoMotor) MidPulseSP() int {
 	return s.readInt("mid_pulse_sp")
 }
 
@@ -979,7 +979,7 @@ func (s *ServoMotor) MidPulseSp() int {
 // servo to drive to the miniumum (counter-clockwise) position_sp. Default value
 // is 600. Valid values are 300 to 700. You must write to the position_sp
 // attribute for changes to this attribute to take effect.
-func (s *ServoMotor) SetMinPulseSp(x int) {
+func (s *ServoMotor) SetMinPulseSP(x int) {
 	s.writeInt("min_pulse_sp", x)
 }
 
@@ -987,7 +987,7 @@ func (s *ServoMotor) SetMinPulseSp(x int) {
 // servo to drive to the miniumum (counter-clockwise) position_sp. Default value
 // is 600. Valid values are 300 to 700. You must write to the position_sp
 // attribute for changes to this attribute to take effect.
-func (s *ServoMotor) MinPulseSp() int {
+func (s *ServoMotor) MinPulseSP() int {
 	return s.readInt("min_pulse_sp")
 }
 
@@ -1016,7 +1016,7 @@ func (s *ServoMotor) Address() string {
 // servo to move to the specified position_sp. Units are percent. Valid values
 // are -100 to 100 (-100% to 100%) where `-100` corresponds to `min_pulse_sp`,
 // `0` corresponds to `mid_pulse_sp` and `100` corresponds to `max_pulse_sp`.
-func (s *ServoMotor) SetPositionSp(x int) {
+func (s *ServoMotor) SetPositionSP(x int) {
 	s.writeInt("position_sp", x)
 }
 
@@ -1024,7 +1024,7 @@ func (s *ServoMotor) SetPositionSp(x int) {
 // servo to move to the specified position_sp. Units are percent. Valid values
 // are -100 to 100 (-100% to 100%) where `-100` corresponds to `min_pulse_sp`,
 // `0` corresponds to `mid_pulse_sp` and `100` corresponds to `max_pulse_sp`.
-func (s *ServoMotor) PositionSp() int {
+func (s *ServoMotor) PositionSP() int {
 	return s.readInt("position_sp")
 }
 
@@ -1034,7 +1034,7 @@ func (s *ServoMotor) PositionSp() int {
 // to 180 degrees. Note: Some servo controllers may not support this in which
 // case reading and writing will fail with `-EOPNOTSUPP`. In continuous rotation
 // servos, this value will affect the rate_sp at which the speed ramps up or down.
-func (s *ServoMotor) SetRateSp(x int) {
+func (s *ServoMotor) SetRateSP(x int) {
 	s.writeInt("rate_sp", x)
 }
 
@@ -1044,7 +1044,7 @@ func (s *ServoMotor) SetRateSp(x int) {
 // to 180 degrees. Note: Some servo controllers may not support this in which
 // case reading and writing will fail with `-EOPNOTSUPP`. In continuous rotation
 // servos, this value will affect the rate_sp at which the speed ramps up or down.
-func (s *ServoMotor) RateSp() int {
+func (s *ServoMotor) RateSP() int {
 	return s.readInt("rate_sp")
 }
 

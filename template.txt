@@ -37,16 +37,16 @@ func Open{{$t|camel}}(port string) (*{{$t|camel}}, error) {
 {{if .writeAccess}}
 {{range .description}}
 // {{.|doc}}{{end}}
-func ({{$t|recv}} *{{$t|camel}}) Set{{.systemName|camel}} (x {{.type|type}}) {
-	{{$t|recv}}.write{{.type|suffix}}("{{.systemName}}", x)
+func ({{$t|recv}} *{{$t|camel}}) Set{{.name|camel}} (x {{.type|type}}) {
+	{{$t|recv}}.write{{.type|camel}}("{{.systemName}}", x)
 }
 {{end}}
 
 {{if .readAccess}}
 {{range .description}}
 // {{.|doc}}{{end}}
-func ({{$t|recv}} *{{$t|camel}}) {{.systemName|camel}} () {{.type|type}}{
-	return {{$t|recv}}.read{{.type|suffix}}("{{.systemName}}")
+func ({{$t|recv}} *{{$t|camel}}) {{.name|camel}} () {{.type|type}}{
+	return {{$t|recv}}.read{{.type|camel}}("{{.systemName}}")
 }
 {{end}}
 

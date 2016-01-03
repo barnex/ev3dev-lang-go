@@ -665,7 +665,7 @@
                       "Sets the brightness level. Possible values are from 0 to `max_brightness`."
                   ]
                 },
-                { "name": "Triggers", "systemName": "triggers", "type": "string array", "readAccess": true, "writeAccess": false,
+                { "name": "Triggers", "systemName": "trigger", "type": "string array", "readAccess": true, "writeAccess": false,
                   "description": [
                       "Returns a list of available triggers."
                   ]
