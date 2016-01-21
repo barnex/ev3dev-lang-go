@@ -2,14 +2,14 @@
 //
 // Package ev3 provides a Go interface for LEGO Mindstorms EV3 running ev3dev
 // (http://www.ev3dev.org).
-// This file is auto-generated for the spec defined at http://github.com/ev3dev/ev3dev-lang, version 0.9.3-pre, revision 2.
-// Supported kernel: v3.16.7-ckt16-7-ev3dev-ev3
+// This file is auto-generated for the spec defined at http://github.com/ev3dev/ev3dev-lang, version 1.0.0, revision <no value>.
+// Supported kernel: v3.16.7-ckt21-9-ev3dev
 package ev3
 
 // Provides a generic button reading mechanism that can be adapted
 // to platform specific implementations. Each platform's specific
 // button capabilites are enumerated in the 'platforms' section
-// of this specification
+// of this specification.
 type Button struct {
 	IODevice
 }
@@ -44,6 +44,11 @@ func OpenDCMotor(port string) (*DCMotor, error) {
 		return nil, err
 	}
 	return &DCMotor{IODevice: io}, nil
+}
+
+// Returns the name of the port that this motor is connected to.
+func (d *DCMotor) Address() string {
+	return d.readString("address")
 }
 
 // Sets the command for the motor. Possible values are `run-forever`, `run-timed` and
@@ -93,11 +98,6 @@ func (d *DCMotor) SetPolarity(x string) {
 // Sets the polarity of the motor. Valid values are `normal` and `inversed`.
 func (d *DCMotor) Polarity() string {
 	return d.readString("polarity")
-}
-
-// Returns the name of the port that this motor is connected to.
-func (d *DCMotor) Address() string {
-	return d.readString("address")
 }
 
 // Sets the time in milliseconds that it take the motor to ramp down from 100%
@@ -348,14 +348,20 @@ type LegoPort struct {
 
 // OpenLegoPort connects to a Lego Port.
 // The corresponding device is under
-// 	/sys/class/lego_port/<no value>/
+// 	/sys/class/lego-port/<no value>/
 // where {0} is replaced to match the specified port.
 func OpenLegoPort(port string) (*LegoPort, error) {
-	io, err := OpenIODevice("lego_port", "<no value>", port)
+	io, err := OpenIODevice("lego-port", "<no value>", port)
 	if err != nil {
 		return nil, err
 	}
 	return &LegoPort{IODevice: io}, nil
+}
+
+// Returns the name of the port. See individual driver documentation for
+// the name that will be returned.
+func (l *LegoPort) Address() string {
+	return l.readString("address")
 }
 
 // Returns the name of the driver that loaded this device. You can find the
@@ -383,12 +389,6 @@ func (l *LegoPort) SetMode(x string) {
 // this will depend on the individual driver implementing this class.
 func (l *LegoPort) Mode() string {
 	return l.readString("mode")
-}
-
-// Returns the name of the port. See individual driver documentation for
-// the name that will be returned.
-func (l *LegoPort) Address() string {
-	return l.readString("address")
 }
 
 // For modes that support it, writing the name of a driver will cause a new
@@ -444,6 +444,11 @@ func OpenMotor(port string) (*Motor, error) {
 		return nil, err
 	}
 	return &Motor{IODevice: io}, nil
+}
+
+// Returns the name of the port that this motor is connected to.
+func (m *Motor) Address() string {
+	return m.readString("address")
 }
 
 // Sends a command to the motor controller. See `commands` for a list of
@@ -544,11 +549,6 @@ func (m *Motor) Polarity() string {
 	return m.readString("polarity")
 }
 
-// Returns the name of the port that this motor is connected to.
-func (m *Motor) Address() string {
-	return m.readString("address")
-}
-
 // Returns the current position of the motor in pulses of the rotary
 // encoder. When the motor rotates clockwise, the position will increase.
 // Likewise, rotating counter-clockwise causes the position to decrease.
@@ -611,7 +611,7 @@ func (m *Motor) PositionSP() int {
 	return m.readInt("position_sp")
 }
 
-// Returns the current motor speed in tacho counts per second. Not, this is
+// Returns the current motor speed in tacho counts per second. Note, this is
 // not necessarily degrees (although it is for LEGO motors). Use the `count_per_rot`
 // attribute to convert this value to RPM or deg/sec.
 func (m *Motor) Speed() int {
@@ -841,6 +841,12 @@ func OpenSensor(port string) (*Sensor, error) {
 	return &Sensor{IODevice: io}, nil
 }
 
+// Returns the name of the port that the sensor is connected to, e.g. `ev3:in1`.
+// I2C sensors also include the I2C address (decimal), e.g. `ev3:in1:i2c8`.
+func (s *Sensor) Address() string {
+	return s.readString("address")
+}
+
 // Sends a command to the sensor.
 func (s *Sensor) SetCommand(x string) {
 	s.writeString("command", x)
@@ -887,12 +893,6 @@ func (s *Sensor) NumValues() int {
 	return s.readInt("num_values")
 }
 
-// Returns the name of the port that the sensor is connected to, e.g. `ev3:in1`.
-// I2C sensors also include the I2C address (decimal), e.g. `ev3:in1:i2c8`.
-func (s *Sensor) Address() string {
-	return s.readString("address")
-}
-
 // Returns the units of the measured value for the current mode. May return
 // empty string
 func (s *Sensor) Units() string {
@@ -916,6 +916,11 @@ func OpenServoMotor(port string) (*ServoMotor, error) {
 		return nil, err
 	}
 	return &ServoMotor{IODevice: io}, nil
+}
+
+// Returns the name of the port that this motor is connected to.
+func (s *ServoMotor) Address() string {
+	return s.readString("address")
 }
 
 // Sets the command for the servo. Valid values are `run` and `float`. Setting
@@ -997,11 +1002,6 @@ func (s *ServoMotor) SetPolarity(x string) {
 // correspond to `min_pulse_sp`.
 func (s *ServoMotor) Polarity() string {
 	return s.readString("polarity")
-}
-
-// Returns the name of the port that this motor is connected to.
-func (s *ServoMotor) Address() string {
-	return s.readString("address")
 }
 
 // Reading returns the current position_sp of the servo. Writing instructs the

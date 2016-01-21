@@ -1,8 +1,7 @@
 {
     "meta": {
-        "version": "0.9.3-pre",
-        "specRevision": 2,
-        "supportedKernel": "v3.16.7-ckt16-7-ev3dev-ev3"
+        "version": "1.0.0",
+        "supportedKernel": "v3.16.7-ckt21-9-ev3dev"
     },
     "classes": {
         "motor": {
@@ -17,6 +16,11 @@
             "systemClassName":  "tacho-motor",
             "systemDeviceNameConvention":  "motor{0}",
             "systemProperties": [
+                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
+                  "description": [
+                      "Returns the name of the port that this motor is connected to."
+                  ]
+                },
                 { "name": "Command", "systemName": "command", "type": "string", "readAccess": false, "writeAccess": true,
                   "description": [
                       "Sends a command to the motor controller. See `commands` for a list of",
@@ -90,11 +94,6 @@
                       "Valid values are `normal` and `inversed`."
                   ]
                 },
-                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
-                  "description": [
-                      "Returns the name of the port that this motor is connected to."
-                  ]
-                },
                 { "name": "Position", "systemName": "position", "type": "int", "readAccess": true, "writeAccess": true,
                   "description": [
                       "Returns the current position of the motor in pulses of the rotary",
@@ -128,7 +127,7 @@
                 },
                 { "name": "Speed", "systemName": "speed", "type": "int", "readAccess": true, "writeAccess": false,
                   "description": [
-                      "Returns the current motor speed in tacho counts per second. Not, this is",
+                      "Returns the current motor speed in tacho counts per second. Note, this is",
                       "not necessarily degrees (although it is for LEGO motors). Use the `count_per_rot`",
                       "attribute to convert this value to RPM or deg/sec."
                   ]
@@ -374,6 +373,11 @@
             "systemClassName":  "dc-motor",
             "systemDeviceNameConvention":  "motor{0}",
             "systemProperties": [
+                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
+                  "description": [
+                      "Returns the name of the port that this motor is connected to."
+                  ]
+                },
                 { "name": "Command", "systemName": "command", "type": "string", "readAccess": false, "writeAccess": true,
                   "description": [
                       "Sets the command for the motor. Possible values are `run-forever`, `run-timed` and",
@@ -409,11 +413,6 @@
                 { "name": "Polarity", "systemName": "polarity", "type": "string", "readAccess": true, "writeAccess": true,
                   "description": [
                       "Sets the polarity of the motor. Valid values are `normal` and `inversed`."
-                  ]
-                },
-                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
-                  "description": [
-                      "Returns the name of the port that this motor is connected to."
                   ]
                 },
                 { "name": "Ramp Down SP", "systemName": "ramp_down_sp", "type": "int", "readAccess": true, "writeAccess": true,
@@ -533,6 +532,11 @@
             "systemClassName":  "servo-motor",
             "systemDeviceNameConvention":  "motor{0}",
             "systemProperties": [
+                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
+                  "description": [
+                      "Returns the name of the port that this motor is connected to."
+                  ]
+                },
                 { "name": "Command", "systemName": "command", "type": "string", "readAccess": false, "writeAccess": true,
                   "description": [
                       "Sets the command for the servo. Valid values are `run` and `float`. Setting",
@@ -578,11 +582,6 @@
                       "Setting the value to `inversed` will cause the position_sp value to be",
                       "inversed. i.e `-100` will correspond to `max_pulse_sp`, and `100` will",
                       "correspond to `min_pulse_sp`."
-                  ]
-                },
-                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
-                  "description": [
-                      "Returns the name of the port that this motor is connected to."
                   ]
                 },
                 { "name": "Position SP", "systemName": "position_sp", "type": "int", "readAccess": true, "writeAccess": true,
@@ -710,7 +709,7 @@
                 "Provides a generic button reading mechanism that can be adapted",
                 "to platform specific implementations. Each platform's specific",
                 "button capabilites are enumerated in the 'platforms' section",
-                "of this specification"
+                "of this specification."
             ]
         },
         "sensor": {
@@ -735,6 +734,12 @@
             "systemClassName":  "lego-sensor",
             "systemDeviceNameConvention":  "sensor{0}",
             "systemProperties": [
+                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
+                  "description": [
+                      "Returns the name of the port that the sensor is connected to, e.g. `ev3:in1`.",
+                      "I2C sensors also include the I2C address (decimal), e.g. `ev3:in1:i2c8`."
+                  ]
+                },
                 { "name": "Command", "systemName": "command", "type": "string", "readAccess": false, "writeAccess": true,
                   "description": [
                       "Sends a command to the sensor."
@@ -773,12 +778,6 @@
                   "description": [
                       "Returns the number of `value<N>` attributes that will return a valid value",
                       "for the current mode."
-                  ]
-                },
-                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
-                  "description": [
-                      "Returns the name of the port that the sensor is connected to, e.g. `ev3:in1`.",
-                      "I2C sensors also include the I2C address (decimal), e.g. `ev3:in1:i2c8`."
                   ]
                 },
                 { "name": "Units", "systemName": "units", "type": "string", "readAccess": true, "writeAccess": false,
@@ -870,8 +869,14 @@
                 "related to the actual port at all - use the `address` attribute to find",
                 "a specific port."
             ],
-            "systemClassName":  "lego_port",
+            "systemClassName":  "lego-port",
             "systemProperties": [
+                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
+                    "description": [
+                        "Returns the name of the port. See individual driver documentation for",
+                        "the name that will be returned."
+                    ]
+                },
                 { "name": "Driver Name", "systemName": "driver_name", "type": "string", "readAccess": true, "writeAccess": false,
                   "description": [
                       "Returns the name of the driver that loaded this device. You can find the",
@@ -889,12 +894,6 @@
                         "Generally speaking when the mode changes any sensor or motor devices",
                         "associated with the port will be removed new ones loaded, however this",
                         "this will depend on the individual driver implementing this class."
-                    ]
-                },
-                { "name": "Address", "systemName": "address", "type": "string", "readAccess": true, "writeAccess": false,
-                    "description": [
-                        "Returns the name of the port. See individual driver documentation for",
-                        "the name that will be returned."
                     ]
                 },
                 { "name": "Set Device", "systemName": "set_device", "type": "string", "readAccess": false, "writeAccess": true,
