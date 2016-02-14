@@ -53,6 +53,10 @@ func OpenIODevice(sysClass, devNameConvention, port string) (IODevice, error) {
 	return IODevice{}, fmt.Errorf("open %v:%v: port not found in %v", sysClass, port, ls)
 }
 
+func (d *IODevice) String() string {
+	return d.path
+}
+
 func readFile(f string) []byte {
 	bytes, err := ioutil.ReadFile(f)
 	if err != nil {
