@@ -5,15 +5,15 @@ import (
 )
 
 func init() {
-	SysFS = "testdata/sys/class/"
+	SysFS = "testdata/"
 }
 
 func TestOpenMotor(t *testing.T) {
-	m, err := OpenMotor("outA")
+	m, err := OpenMotor("outC")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
-	if m.Address() != "outA" {
-		t.Errorf("Address: got %v, want %v:", m.Address(), "outA")
+	if m.Address() != "outC" {
+		t.Errorf("Address: got %q, want %q:", m.Address(), "outC")
 	}
 }

@@ -1,6 +1,7 @@
 package ev3
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -17,6 +18,9 @@ type IODevice struct {
 	path string
 }
 
+// sysClass: e.g.: "tacho-motor"
+// devNameConvetion: e.g.: "motor{0} (unused)
+// port: e.g.: "outC"
 func OpenIODevice(sysClass, devNameConvention, port string) (IODevice, error) {
 
 	// list all files under /sys/class/<sysClass>
@@ -42,36 +46,45 @@ func OpenIODevice(sysClass, devNameConvention, port string) (IODevice, error) {
 
 	// search port_name files for matching port
 	for _, f := range ls {
-		if readFile(path.Join(sysDir, f, "port_name")) == port {
+		if string(readFile(path.Join(sysDir, f, "address"))) == port {
 			return IODevice{path: path.Join(sysDir, f)}, nil
 		}
 	}
 	return IODevice{}, fmt.Errorf("open %v:%v: port not found in %v", sysClass, port, ls)
 }
 
-func readFile(f string) string {
+func readFile(f string) []byte {
 	bytes, err := ioutil.ReadFile(f)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Printf("%s: %q", f, bytes)
-	return strings.TrimSpace(string(bytes))
+	return clean(bytes)
 }
 
-func(d IODevice)write(file string, x interface{}){
+func clean(x []byte) []byte {
+	// strip trailing nul characters (test files)
+	// TODO(barnex): clean up test files
+	for i, b := range x {
+		if b == 0 {
+			x = x[:i]
+			break
+		}
+	}
+	return bytes.Trim(x, "\n")
+}
+
+func (d IODevice) write(file string, x interface{}) {
 	f, err := os.OpenFile(path.Join(d.path, file), os.O_WRONLY, 0666)
-	if err != nil{panic (err)}
+	if err != nil {
+		panic(err)
+	}
 	defer f.Close()
 	fmt.Println(f, x)
 }
 
-func(d IODevice)read(file string) []byte{
-	f, err := os.OpenFile(path.Join(d.path, file), os.O_RDONLY, 0666)
-	if err != nil{panic (err)}
-	defer f.Close()
-	bytes, err := ioutil.ReadAll(f)
-	if err != nil{panic(err)}
-	return bytes
+func (d IODevice) read(file string) []byte {
+	f := path.Join(d.path, file)
+	return readFile(f)
 }
 
 func (d IODevice) writeString(file string, x string) {
@@ -91,7 +104,7 @@ func (d IODevice) readInt(file string) int {
 }
 
 func (d IODevice) readString(file string) string {
-	return string(d.read(file))
+	return strings.Trim(string(d.read(file)), "\n")
 }
 
 func (d IODevice) readStringArray(file string) []string {
