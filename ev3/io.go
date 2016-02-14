@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -53,6 +54,10 @@ func OpenIODevice(sysClass, devNameConvention, port string) (IODevice, error) {
 	return IODevice{}, fmt.Errorf("open %v:%v: port not found in %v", sysClass, port, ls)
 }
 
+func handle(err error) {
+	panic(err)
+}
+
 func (d *IODevice) String() string {
 	return d.path
 }
@@ -78,17 +83,25 @@ func clean(x []byte) []byte {
 }
 
 func (d IODevice) write(file string, x interface{}) {
-	f, err := os.OpenFile(path.Join(d.path, file), os.O_WRONLY, 0666)
+	fname := path.Join(d.path, file)
+
+	log.Println(x, ">", fname)
+	f, err := os.OpenFile(fname, os.O_WRONLY, 0666)
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
-	fmt.Println(f, x)
+	_, err = fmt.Fprintln(f, x)
+	if err != nil {
+		handle(err)
+	}
 }
 
 func (d IODevice) read(file string) []byte {
 	f := path.Join(d.path, file)
-	return readFile(f)
+	r := readFile(f)
+	log.Println(f, ">", r)
+	return r
 }
 
 func (d IODevice) writeString(file string, x string) {
@@ -104,7 +117,11 @@ func (d IODevice) writeInt(file string, x int) {
 }
 
 func (d IODevice) readInt(file string) int {
-	panic("not implemented")
+	i, err := strconv.Atoi(d.readString(file))
+	if err != nil {
+		handle(err)
+	}
+	return i
 }
 
 func (d IODevice) readString(file string) string {

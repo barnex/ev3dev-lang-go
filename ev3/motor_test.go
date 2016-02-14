@@ -18,6 +18,7 @@ Hardware setup:
 import (
 	"fmt"
 	"log"
+	"time"
 )
 
 func init() {
@@ -66,7 +67,6 @@ func ExampleMotor_Commands() {
 }
 
 func ExampleMotor_CountPerRot() {
-
 	m, err := OpenMotor("")
 	if err != nil {
 		log.Fatal(err)
@@ -74,26 +74,57 @@ func ExampleMotor_CountPerRot() {
 	fmt.Println(m.CountPerRot())
 
 	//Output:
-	// 0
+	// 360
 }
 
-func ExampleMotor_DriverName()                {}
-func ExampleMotor_DutyCycle()                 {}
-func ExampleMotor_DutyCycleSP()               {}
-func ExampleMotor_EncoderPolarity()           {}
-func ExampleMotor_Polarity()                  {}
-func ExampleMotor_Position()                  {}
-func ExampleMotor_PositionD()                 {}
-func ExampleMotor_PositionI()                 {}
-func ExampleMotor_PositionP()                 {}
-func ExampleMotor_PositionSP()                {}
-func ExampleMotor_RampDownSP()                {}
-func ExampleMotor_RampUpSP()                  {}
-func ExampleMotor_SetCommand()                {}
-func ExampleMotor_SetDutyCycleSP()            {}
-func ExampleMotor_SetEncoderPolarity()        {}
-func ExampleMotor_SetPolarity()               {}
-func ExampleMotor_SetPosition()               {}
+func ExampleMotor_DriverName()      {}
+func ExampleMotor_DutyCycle()       {}
+func ExampleMotor_DutyCycleSP()     {}
+func ExampleMotor_EncoderPolarity() {}
+func ExampleMotor_Polarity()        {}
+func ExampleMotor_Position()        {}
+func ExampleMotor_PositionD()       {}
+func ExampleMotor_PositionI()       {}
+func ExampleMotor_PositionP()       {}
+func ExampleMotor_PositionSP()      {}
+func ExampleMotor_RampDownSP()      {}
+func ExampleMotor_RampUpSP()        {}
+
+func ExampleMotor_SetCommand() {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	m.SetDutyCycleSP(50)
+	fmt.Println("start")
+	m.SetCommand("run-forever")
+	time.Sleep(1 * time.Second)
+	m.SetCommand("stop")
+	fmt.Println("stop")
+
+	//Output:
+	// start
+	// stop
+}
+
+func ExampleMotor_SetDutyCycleSP()     {}
+func ExampleMotor_SetEncoderPolarity() {}
+func ExampleMotor_SetPolarity()        {}
+
+func ExampleMotor_SetPosition() {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(m.Position())
+	m.SetPositionSP(30)
+	m.SetDutyCycleSP(50)
+	m.SetCommand("run-to-abs-pos")
+	fmt.Println(m.Position())
+}
+
 func ExampleMotor_SetPositionD()              {}
 func ExampleMotor_SetPositionI()              {}
 func ExampleMotor_SetPositionP()              {}

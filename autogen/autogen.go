@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 	"os"
-	"text/template"
 	"strings"
+	"text/template"
 	"unicode"
 )
 
@@ -15,10 +15,10 @@ func main() {
 	templFile := flag.Arg(0)
 	t := template.New(templFile)
 	t.Funcs(map[string]interface{}{
-		"camel":  toCamelCase,
-		"doc":    toGoDoc,
-		"recv":   firstLetter,
-		"type":   toType,
+		"camel": toCamelCase,
+		"doc":   toGoDoc,
+		"recv":  firstLetter,
+		"type":  toType,
 	})
 	t, err := t.ParseFiles(templFile)
 	if err != nil {
