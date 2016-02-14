@@ -4,6 +4,9 @@
 // (http://www.ev3dev.org).
 // This file is auto-generated for the spec defined at http://github.com/ev3dev/ev3dev-lang, version 1.0.0, revision <no value>.
 // Supported kernel: v3.16.7-ckt21-9-ev3dev
+//
+// Compile with:
+// 	env GOOS=linux GOARCH=arm GOARM=5 go test
 package ev3
 
 // Provides a generic button reading mechanism that can be adapted
