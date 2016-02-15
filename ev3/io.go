@@ -55,7 +55,7 @@ func OpenIODevice(sysClass, devNameConvention, port string) (IODevice, error) {
 }
 
 func handle(err error) {
-	panic(err)
+	log.Println(err)
 }
 
 func (d *IODevice) String() string {
@@ -88,7 +88,8 @@ func (d IODevice) write(file string, x interface{}) {
 	log.Println(x, ">", fname)
 	f, err := os.OpenFile(fname, os.O_WRONLY, 0666)
 	if err != nil {
-		panic(err)
+		handle(err)
+		return
 	}
 	defer f.Close()
 	_, err = fmt.Fprintln(f, x)

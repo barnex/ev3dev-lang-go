@@ -77,18 +77,119 @@ func ExampleMotor_CountPerRot() {
 	// 360
 }
 
-func ExampleMotor_DriverName()      {}
-func ExampleMotor_DutyCycle()       {}
-func ExampleMotor_DutyCycleSP()     {}
-func ExampleMotor_EncoderPolarity() {}
-func ExampleMotor_Polarity()        {}
-func ExampleMotor_Position()        {}
-func ExampleMotor_PositionD()       {}
-func ExampleMotor_PositionI()       {}
-func ExampleMotor_PositionP()       {}
-func ExampleMotor_PositionSP()      {}
-func ExampleMotor_RampDownSP()      {}
-func ExampleMotor_RampUpSP()        {}
+func ExampleMotor_DriverName()      {
+	medium, _ := OpenMotor("outA")
+	fmt.Println(medium.DriverName())
+	large, _ := OpenMotor("outB")
+	fmt.Println(large.DriverName())
+
+	//Output:
+	// lego-ev3-m-motor
+	// lego-ev3-l-motor
+}
+
+func ExampleMotor_DutyCycle()       {
+	m, _ := OpenMotor("")
+	fmt.Println(m.DutyCycle())
+
+	//Output:
+	// 0
+}
+
+func ExampleMotor_DutyCycleSP()     {
+	m, _ := OpenMotor("")
+	fmt.Println(m.DutyCycleSP())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_EncoderPolarity() {
+	m, _ := OpenMotor("")
+	fmt.Println(m.EncoderPolarity())
+
+	//Output:
+	// normal
+}
+func ExampleMotor_Polarity()        {
+	m, _ := OpenMotor("")
+	fmt.Println(m.Polarity())
+
+	//Output:
+	// normal
+}
+func ExampleMotor_Position()        {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.Position())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_PositionD()       {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.PositionD())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_PositionI()       {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.PositionI())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_PositionP()       {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.PositionP())
+
+	//Output:
+	// 0
+
+}
+func ExampleMotor_PositionSP()      {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.PositionSP())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_RampDownSP()      {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.RampDownSP())
+
+	//Output:
+	// 0
+
+}
+func ExampleMotor_RampUpSP()        {
+	m, err := OpenMotor("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m.RampUpSP())
+
+	//Output:
+	// 0
+
+}
 
 func ExampleMotor_SetCommand() {
 	m, err := OpenMotor("")
@@ -108,21 +209,25 @@ func ExampleMotor_SetCommand() {
 	// stop
 }
 
+
 func ExampleMotor_SetDutyCycleSP()     {}
+
 func ExampleMotor_SetEncoderPolarity() {}
+
 func ExampleMotor_SetPolarity()        {}
 
 func ExampleMotor_SetPosition() {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+	m, _ := OpenMotor("")
 
 	fmt.Println(m.Position())
 	m.SetPositionSP(30)
-	m.SetDutyCycleSP(50)
+	m.SetDutyCycleSP(100)
 	m.SetCommand("run-to-abs-pos")
 	fmt.Println(m.Position())
+
+	//Output:
+	// 0
+	// 30
 }
 
 func ExampleMotor_SetPositionD()              {}
