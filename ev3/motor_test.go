@@ -77,7 +77,7 @@ func ExampleMotor_CountPerRot() {
 	// 360
 }
 
-func ExampleMotor_DriverName()      {
+func ExampleMotor_DriverName() {
 	medium, _ := OpenMotor("outA")
 	fmt.Println(medium.DriverName())
 	large, _ := OpenMotor("outB")
@@ -88,7 +88,7 @@ func ExampleMotor_DriverName()      {
 	// lego-ev3-l-motor
 }
 
-func ExampleMotor_DutyCycle()       {
+func ExampleMotor_DutyCycle() {
 	m, _ := OpenMotor("")
 	fmt.Println(m.DutyCycle())
 
@@ -96,94 +96,122 @@ func ExampleMotor_DutyCycle()       {
 	// 0
 }
 
-func ExampleMotor_DutyCycleSP()     {
-	m, _ := OpenMotor("")
+func ExampleMotor_DutyCycleSP() {
+	m, _ := OpenMotor("outA")
+	m.SetDutyCycleSP(100)
 	fmt.Println(m.DutyCycleSP())
 
 	//Output:
-	// 0
+	// 100
 }
+
+func ExampleMotor_SetDutyCycleSP() {
+	m, _ := OpenMotor("outA")
+	m.SetDutyCycleSP(100)
+	fmt.Println(m.DutyCycleSP())
+
+	//Output:
+	// 100
+}
+
 func ExampleMotor_EncoderPolarity() {
-	m, _ := OpenMotor("")
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.EncoderPolarity())
 
 	//Output:
 	// normal
 }
-func ExampleMotor_Polarity()        {
-	m, _ := OpenMotor("")
+
+func ExampleMotor_SetEncoderPolarity() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.EncoderPolarity())
+	m.SetEncoderPolarity("inversed")
+	fmt.Println(m.EncoderPolarity())
+
+	//Output:
+	// normal
+	// inversed
+}
+
+func ExampleMotor_Polarity() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.Polarity())
 
 	//Output:
 	// normal
 }
-func ExampleMotor_Position()        {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+
+func ExampleMotor_SetPolarity() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.Polarity())
+	m.SetPolarity("inversed")
+	fmt.Println(m.Polarity())
+
+	//Output:
+	// normal
+	// inversed
+}
+
+func ExampleMotor_Position() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.Position())
 
 	//Output:
 	// 0
 }
-func ExampleMotor_PositionD()       {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+
+func ExampleMotor_SetPosition() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.Position())
+	m.SetPosition(200)
+	m.SetSpeedSP(10)
+	m.SetCommand("run-to-abs-pos")
+	fmt.Println(m.Position())
+
+	//Output:
+	// 0
+	// 200
+}
+
+func ExampleMotor_PositionD() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.PositionD())
 
 	//Output:
 	// 0
 }
-func ExampleMotor_PositionI()       {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+func ExampleMotor_PositionI() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.PositionI())
 
 	//Output:
 	// 0
 }
-func ExampleMotor_PositionP()       {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+func ExampleMotor_PositionP() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.PositionP())
 
 	//Output:
 	// 0
 
 }
-func ExampleMotor_PositionSP()      {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+func ExampleMotor_PositionSP() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.PositionSP())
 
 	//Output:
 	// 0
 }
-func ExampleMotor_RampDownSP()      {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+func ExampleMotor_RampDownSP() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.RampDownSP())
 
 	//Output:
 	// 0
 
 }
-func ExampleMotor_RampUpSP()        {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+func ExampleMotor_RampUpSP() {
+	m, _ := OpenMotor("outA")
 	fmt.Println(m.RampUpSP())
 
 	//Output:
@@ -192,10 +220,7 @@ func ExampleMotor_RampUpSP()        {
 }
 
 func ExampleMotor_SetCommand() {
-	m, err := OpenMotor("")
-	if err != nil {
-		log.Fatal(err)
-	}
+	m, _ := OpenMotor("outA")
 
 	m.SetDutyCycleSP(50)
 	fmt.Println("start")
@@ -209,47 +234,64 @@ func ExampleMotor_SetCommand() {
 	// stop
 }
 
+func ExampleMotor_SetRampDownSP() {}
 
-func ExampleMotor_SetDutyCycleSP()     {}
+func ExampleMotor_SetRampUpSP() {}
 
-func ExampleMotor_SetEncoderPolarity() {}
+func ExampleMotor_SetSpeedRegulationD() {}
 
-func ExampleMotor_SetPolarity()        {}
+func ExampleMotor_SetSpeedRegulationEnabled() {}
 
-func ExampleMotor_SetPosition() {
-	m, _ := OpenMotor("")
+func ExampleMotor_SetSpeedRegulationI() {}
 
-	fmt.Println(m.Position())
-	m.SetPositionSP(30)
-	m.SetDutyCycleSP(100)
-	m.SetCommand("run-to-abs-pos")
-	fmt.Println(m.Position())
+func ExampleMotor_SetSpeedRegulationP() {}
+
+func ExampleMotor_SetSpeedSP() {}
+
+func ExampleMotor_StopCommand() {
+	m, _ := OpenMotor("outB")
+	fmt.Println(m.StopCommand())
 
 	//Output:
-	// 0
-	// 30
+	// coast
 }
 
-func ExampleMotor_SetPositionD()              {}
-func ExampleMotor_SetPositionI()              {}
-func ExampleMotor_SetPositionP()              {}
-func ExampleMotor_SetPositionSP()             {}
-func ExampleMotor_SetRampDownSP()             {}
-func ExampleMotor_SetRampUpSP()               {}
-func ExampleMotor_SetSpeedRegulationD()       {}
-func ExampleMotor_SetSpeedRegulationEnabled() {}
-func ExampleMotor_SetSpeedRegulationI()       {}
-func ExampleMotor_SetSpeedRegulationP()       {}
-func ExampleMotor_SetSpeedSP()                {}
-func ExampleMotor_SetStopCommand()            {}
-func ExampleMotor_SetTimeSP()                 {}
-func ExampleMotor_Speed()                     {}
-func ExampleMotor_SpeedRegulationD()          {}
-func ExampleMotor_SpeedRegulationEnabled()    {}
-func ExampleMotor_SpeedRegulationI()          {}
-func ExampleMotor_SpeedRegulationP()          {}
-func ExampleMotor_SpeedSP()                   {}
-func ExampleMotor_State()                     {}
-func ExampleMotor_StopCommand()               {}
-func ExampleMotor_StopCommands()              {}
-func ExampleMotor_TimeSP()                    {}
+func ExampleMotor_SetStopCommand() {
+	m, _ := OpenMotor("outB")
+	fmt.Println(m.StopCommand())
+	m.SetStopCommand("brake")
+	fmt.Println(m.StopCommand())
+	m.SetStopCommand("hold")
+	fmt.Println(m.StopCommand())
+
+	//Output:
+	// coast
+	// brake
+	// hold
+}
+
+func ExampleMotor_SetTimeSP() {}
+
+func ExampleMotor_Speed() {}
+
+func ExampleMotor_SpeedRegulationD() {}
+
+func ExampleMotor_SpeedRegulationEnabled() {}
+
+func ExampleMotor_SpeedRegulationI() {}
+
+func ExampleMotor_SpeedRegulationP() {}
+
+func ExampleMotor_SpeedSP() {}
+
+func ExampleMotor_State() {}
+
+func ExampleMotor_StopCommands() {
+	m, _ := OpenMotor("outB")
+	fmt.Println(m.StopCommands)
+
+	//Output:
+	// [coast brake hold]
+}
+
+func ExampleMotor_TimeSP() {}

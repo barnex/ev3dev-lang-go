@@ -42,16 +42,22 @@ func OpenIODevice(sysClass, devNameConvention, port string) (IODevice, error) {
 
 	// no port specified: return first matching
 	if port == "" {
-		return IODevice{path: path.Join(sysDir, ls[0])}, nil
+		return ioDevice(path.Join(sysDir, ls[0])), nil
 	}
 
 	// search port_name files for matching port
 	for _, f := range ls {
 		if string(readFile(path.Join(sysDir, f, "address"))) == port {
-			return IODevice{path: path.Join(sysDir, f)}, nil
+			return ioDevice(path.Join(sysDir, f)), nil
 		}
 	}
 	return IODevice{}, fmt.Errorf("open %v:%v: port not found in %v", sysClass, port, ls)
+}
+
+func ioDevice(path string) IODevice {
+	d := IODevice{path: path}
+	d.writeString("command", "reset")
+	return d
 }
 
 func handle(err error) {
@@ -63,29 +69,16 @@ func (d *IODevice) String() string {
 }
 
 func readFile(f string) []byte {
-	bytes, err := ioutil.ReadFile(f)
+	b, err := ioutil.ReadFile(f)
 	if err != nil {
-		log.Println(err)
+		handle(err)
+		return nil
 	}
-	return clean(bytes)
-}
-
-func clean(x []byte) []byte {
-	// strip trailing nul characters (test files)
-	// TODO(barnex): clean up test files
-	for i, b := range x {
-		if b == 0 {
-			x = x[:i]
-			break
-		}
-	}
-	return bytes.Trim(x, "\n")
+	return bytes.Trim(b, "\n")
 }
 
 func (d IODevice) write(file string, x interface{}) {
 	fname := path.Join(d.path, file)
-
-	log.Println(x, ">", fname)
 	f, err := os.OpenFile(fname, os.O_WRONLY, 0666)
 	if err != nil {
 		handle(err)
@@ -101,7 +94,6 @@ func (d IODevice) write(file string, x interface{}) {
 func (d IODevice) read(file string) []byte {
 	f := path.Join(d.path, file)
 	r := readFile(f)
-	log.Println(f, ">", r)
 	return r
 }
 
