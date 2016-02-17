@@ -18,6 +18,7 @@ Hardware setup:
 import (
 	"fmt"
 	"log"
+	"testing"
 	"time"
 )
 
@@ -180,7 +181,23 @@ func ExampleMotor_PositionD() {
 	//Output:
 	// 0
 }
+
+func ExampleMotor_SetPositionD() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.PositionD())
+
+	//Output:
+	// 0
+}
+
 func ExampleMotor_PositionI() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.PositionI())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_SetPositionI() {
 	m, _ := OpenMotor("outA")
 	fmt.Println(m.PositionI())
 
@@ -195,7 +212,22 @@ func ExampleMotor_PositionP() {
 	// 0
 
 }
+func ExampleMotor_SetPositionP() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.PositionP())
+
+	//Output:
+	// 0
+
+}
 func ExampleMotor_PositionSP() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.PositionSP())
+
+	//Output:
+	// 0
+}
+func ExampleMotor_SetPositionSP() {
 	m, _ := OpenMotor("outA")
 	fmt.Println(m.PositionSP())
 
@@ -210,7 +242,23 @@ func ExampleMotor_RampDownSP() {
 	// 0
 
 }
+func ExampleMotor_SetRampDownSP() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.RampDownSP())
+
+	//Output:
+	// 0
+
+}
 func ExampleMotor_RampUpSP() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.RampUpSP())
+
+	//Output:
+	// 0
+
+}
+func ExampleMotor_SetRampUpSP() {
 	m, _ := OpenMotor("outA")
 	fmt.Println(m.RampUpSP())
 
@@ -234,20 +282,6 @@ func ExampleMotor_SetCommand() {
 	// stop
 }
 
-func ExampleMotor_SetRampDownSP() {}
-
-func ExampleMotor_SetRampUpSP() {}
-
-func ExampleMotor_SetSpeedRegulationD() {}
-
-func ExampleMotor_SetSpeedRegulationEnabled() {}
-
-func ExampleMotor_SetSpeedRegulationI() {}
-
-func ExampleMotor_SetSpeedRegulationP() {}
-
-func ExampleMotor_SetSpeedSP() {}
-
 func ExampleMotor_StopCommand() {
 	m, _ := OpenMotor("outB")
 	fmt.Println(m.StopCommand())
@@ -270,21 +304,104 @@ func ExampleMotor_SetStopCommand() {
 	// hold
 }
 
-func ExampleMotor_SetTimeSP() {}
+func ExampleMotor_SetTimeSP() {
+	m, _ := OpenMotor("outA")
+	m.SetTimeSP(100)
+	m.SetDutyCycleSP(10)
+	m.SetCommand("run-timed")
 
-func ExampleMotor_Speed() {}
+	//Output:
+	// ..
+}
 
-func ExampleMotor_SpeedRegulationD() {}
+func TestMotor_TimeSP(t *testing.T) {
+	m, err := OpenMotor("outA")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if have := m.TimeSP(); have != 0 {
+		t.Errorf("TimeSP: have %v, want %v", have, 0)
+	}
+	m.SetTimeSP(100)
+	if have := m.TimeSP(); have != 100 {
+		t.Errorf("TimeSP: have %v, want %v", have, 100)
+	}
+}
 
-func ExampleMotor_SpeedRegulationEnabled() {}
+func ExampleMotor_Speed() {
 
-func ExampleMotor_SpeedRegulationI() {}
+	//Output:
+	//
+}
 
-func ExampleMotor_SpeedRegulationP() {}
+func ExampleMotor_SpeedRegulationD() {
 
-func ExampleMotor_SpeedSP() {}
+	//Output:
+	//
+}
 
-func ExampleMotor_State() {}
+func ExampleMotor_SpeedRegulationEnabled() {
+
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.SpeedRegulationEnabled())
+
+	//Output:
+	// ...
+}
+
+func ExampleMotor_SpeedRegulationI() {
+
+	//Output:
+	//
+}
+
+func ExampleMotor_SpeedRegulationP() {
+
+	//Output:
+	//
+
+}
+
+func ExampleMotor_SetSpeedRegulationEnabled() {
+	m, _ := OpenMotor("outA")
+	m.SetSpeedRegulationEnabled("true")
+	fmt.Println(m.SpeedRegulationEnabled())
+	m.SetSpeedSP(50)
+	fmt.Println(m.SpeedSP())
+	//Output:
+	// true
+}
+
+func ExampleMotor_SetSpeedSP() {
+	m, _ := OpenMotor("outA")
+	m.SetSpeedRegulationEnabled("true")
+	m.SetSpeedSP(50)
+	fmt.Println(m.SpeedSP())
+	//Output:
+	// 50
+}
+
+func ExampleMotor_SetSpeedRegulationD() {
+
+}
+
+func ExampleMotor_SetSpeedRegulationI() {
+
+}
+
+func ExampleMotor_SetSpeedRegulationP() {
+
+	//Output:
+	//
+}
+
+func ExampleMotor_State() {
+	m, _ := OpenMotor("outA")
+	fmt.Println(m.State())
+
+	//Output:
+	// ...
+}
 
 func ExampleMotor_StopCommands() {
 	m, _ := OpenMotor("outB")
@@ -293,5 +410,3 @@ func ExampleMotor_StopCommands() {
 	//Output:
 	// [coast brake hold]
 }
-
-func ExampleMotor_TimeSP() {}
